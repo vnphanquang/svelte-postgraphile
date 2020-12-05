@@ -1,0 +1,44 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "DOM",
+            "ES2017",
+            "WebWorker"
+        ],
+        "target": "es2020",
+        "module": "es2020",
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importsNotUsedAsValues": "error",
+        "isolatedModules": true,
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "paths": {
+          "*": ["src*"],
+          "@static*": ["static*"],
+          "@components*": ["src/components*"],
+          "@models*": ["src/models*"],
+          "@services*": ["src/services*"],
+          "@stores*": ["src/stores*"],
+          "@repos*": ["src/repos*"],
+          "@utils*": ["src/utils*"]
+        },
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "strict": true,
+        "rootDir": "./src",
+        "typeRoots": ["./typings", "./node_modules/@types"],
+        "types": ["svelte", "node", "@sapper"]
+    },
+    "include": [
+        "src/**/*",
+        "src/node_modules/**/*", 
+        "typings"
+    ],
+    "exclude": [
+        "node_modules/*",
+        "__sapper__/*",
+        "static/*"
+    ],
+}

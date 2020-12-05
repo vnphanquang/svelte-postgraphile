@@ -1,0 +1,18 @@
+.vscode
+
+._*
+.DS_Store
+/.history/
+/node_modules/
+__sapper__/
+/src/node_modules/@sapper/
+
+# generated postcss styles
+static/styles/global.css
+
+# git secret
+.gitsecret/keys/random_seed
+!*.secret
+Migrant.toml
+config/config.development.toml
+config/config.production.toml

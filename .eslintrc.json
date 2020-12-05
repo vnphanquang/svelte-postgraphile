@@ -1,0 +1,71 @@
+{
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es2020": true
+  },
+  "rules": {
+    "semi": ["error", "always"],
+    "indent": ["error", 2],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "no-tabs": [
+      "error"
+    ],
+    "class-methods-use-this": "off",
+    "no-console": "off",
+    "no-unused-vars": [
+      "error", 
+      { 
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-trailing-spaces": "error",
+    "linebreak-style": ["error", "unix"]
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "extends": [
+        "plugin:import/typescript",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": "off"
+      }
+    },
+    {
+      "files": [
+        "*.svelte"
+      ],
+      "plugins": [
+        "svelte3"
+      ],
+      "processor": "svelte3/svelte3",
+      "rules": {
+        "import/first": "off",
+        "import/no-duplicates": "off",
+        "import/no-mutable-exports": "off",
+        "import/no-mutable-unresolved": "off",
+        "no-undef": "off",
+        "no-unused-vars": "off"
+      }
+    }
+  ]
+}

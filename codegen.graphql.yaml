@@ -1,0 +1,36 @@
+overwrite: true
+schema: 
+  - src/services/graphql/generated/schema.graphql
+generates:
+  src/services/graphql/generated/types.ts:
+    documents:
+      # add all fragments and documents here
+      - src/services/graphql/fragments/account.graphql
+      - src/services/graphql/documents/account.graphql
+      - src/services/graphql/documents/auth.graphql
+      - src/services/graphql/documents/testing.graphql
+    plugins:
+      - jsdoc
+      - typescript
+      - typescript-operations
+    config:
+      maybeValue: T | undefined
+
+  src/services/graphql/generated/documents/auth.ts:
+    documents:
+      - src/services/graphql/documents/auth.graphql
+    plugins:
+      - typescript-document-nodes
+  src/services/graphql/generated/documents/account.ts:
+    documents:
+      - src/services/graphql/fragments/account.graphql
+      - src/services/graphql/documents/account.graphql
+    plugins:
+      - typescript-document-nodes
+  src/services/graphql/generated/documents/testing.ts:
+    documents:
+      - src/services/graphql/documents/testing.graphql
+    plugins:
+      - typescript-document-nodes
+  # continue adding scoped document to be generated
+  #...

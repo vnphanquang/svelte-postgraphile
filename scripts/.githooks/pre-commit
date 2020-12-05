@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# imports utils
+source scripts/utils/cecho.bash # imports functions: cecho, info, warning, error 
+
+
+# get all rust files that were staged
+# filter files that have diff and were added, copied, modified, or renamed
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep ".svelte$")
+
+# skip if no diff
+if [[ "$STAGED_FILES" = "" ]]; then
+  exit 0
+fi
+
+PASS=true
+
+# --------lint & format--------
+# info "Validating with svelte-check..."
+# # check for svelte files
+# which yarn &> /dev/null
+# if [[ "$?" == 1 ]]; then
+#   error "🤔 Yarn not found. Consider checking your yarn installation"
+#   exit 1
+# fi
+# # run svelte-check
+# yarn validate
+# if [[ "$?" == 1 ]]; then
+#   error "🤔 Something ain't look right. Please resolve issue(s) above."
+#   PASS=false
+#   exit 1
+# fi
+
+if ! $PASS; then
+  exit 1
+else
+  info "👌 Loking good. Committing..."
+fi
+
+exit $?

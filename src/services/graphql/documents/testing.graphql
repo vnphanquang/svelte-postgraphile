@@ -1,0 +1,41 @@
+mutation FinishTest(
+  $testId: UUID!,
+  $score : Int!,
+) {
+  finishTest (
+    input: {
+      testId: $testId,
+      score: $score
+    }) {
+      startTesting {
+        id
+        startTime
+        endTime
+      }
+    }
+}
+
+mutation StartTest(
+  $user_email: String!,
+) {
+  startTest (
+    input: {
+      userEmail: $user_email,
+    }) {
+      startTesting {
+        id
+        startTime
+        endTime
+      }
+    }
+}
+
+query AllStartTestings {
+  startTestings {
+    nodes {
+      endTime
+      startTime
+      id
+    }
+  }
+}

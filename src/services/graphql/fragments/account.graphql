@@ -1,0 +1,11 @@
+fragment commonAccountPayload on Account {
+  createdAt
+  email
+  firstName
+  id
+  lastName
+  loginByEmail
+  phone
+  role
+  updatedAt
+}

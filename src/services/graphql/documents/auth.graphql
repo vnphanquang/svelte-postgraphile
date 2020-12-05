@@ -1,0 +1,24 @@
+mutation Authenticate(
+  $email: String!,
+  $password: String!,
+) {
+  authenticate(
+    input: {
+      email: $email,
+      password: $password
+    }
+  ) {
+    jwtToken
+  }
+}
+
+mutation AuthenticateByEmail(
+  $email: String!
+) {
+  authenticateByEmail(
+    input: {
+      email: $email
+    }) {
+      jwtToken
+    }
+}

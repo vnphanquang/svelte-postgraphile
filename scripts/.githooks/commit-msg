@@ -1,0 +1,61 @@
+# #!/bin/bash
+
+# # imports utils
+# source scripts/utils/cecho.bash # imports functions: cecho, info, warning, error 
+
+# # a dictionary containing common formats
+# base_regex="(\(?.*\)?):(.*)";
+# declare -A formats=(\
+#   ['feat']="🎉 feat$base_regex"\
+#   ['fix']="🐛 fix$base_regex"\
+#   ['docs']="📝 docs$base_regex"\
+#   ['style']="✨ style$base_regex"\
+#   ['refactor']="🔨 refactor$base_regex"\
+#   ['test']="🧪 test$base_regex"\
+#   ['chore']="🧹 chore$base_regex"\
+#   ['ci']="🚧 ci$base_regex"\
+#   ['perf']="🐎 perf$base_regex"\
+# );
+
+# info "🔧 Checking git commit message format...";
+# # extract message from git commit
+# message_file=$1;
+# commit_msg=`cat $message_file`;
+# # do the check
+# match="";
+# add_emoji="";
+# scope="";
+# details="";
+# for type in "${!formats[@]}"; do
+#   # get emoji and regex
+#   declare -a format=(${formats[$type]});
+#   emoji=${format[0]};
+#   regex=${format[1]};
+#   # check if message match format
+#   if [[ $commit_msg =~ $regex ]]; then
+#     match="$type";
+#     scope="${BASH_REMATCH[1]}";
+#     details="${BASH_REMATCH[2]}";
+#     # check if message already has emoji
+#     if [[ !($commit_msg =~ $emoji) ]]; then
+#       add_emoji="$emoji";
+#     fi
+#     break;
+#   fi
+# done
+# # notify commiter
+# if [[ -n $match ]]; then
+#   # add emoji if not already
+#   if [[ -n $add_emoji ]]; then
+#     sed -i "s/$commit_msg/$add_emoji$commit_msg/" $message_file;
+#   fi
+#   info "💪 You are a pro commiter."
+#   exit 0;
+# else
+#   error "Commit should follow format: <type>(<scope>): <details>, where:";
+#   error -e "\ttype: feat, fix, docs, style, refactor, test, chore, ci, perf";
+#   error -e "\tscope: place the commit changes";
+#   error -e "\tdetails: imperative, present tense, no end dot";
+#   echo "See more: https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines"
+#   exit 1;
+# fi
