@@ -12,16 +12,14 @@ import type {
   AuthenticateMutation,
   AuthenticateMutationVariables,
 } from '@services/graphql/generated/types';
+import AppConfig from '@app/config';
 
 const PORT = process.env.PORT;
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 
-const JWTCookie = {
-  name: 'dsv-tester-auth',
-  config: {
-    httpOnly: true,
-  }
+if (dev) {
+  console.log('AppConfig', JSON.stringify(AppConfig, null, 2));
 }
 
 express()
@@ -30,15 +28,15 @@ express()
     sirv('static', { dev }),
     cookieParser(),
   )
-  .use('/graphql', (req: Request, _: Response, next: NextFunction) => {
-    const token = req.cookies[JWTCookie.name];
+  .use(AppConfig.api.graphql, (req: Request, _: Response, next: NextFunction) => {
+    const token = req.cookies[AppConfig.cookies.jwt.name];
     if (token) {
       req.headers.authorization = 'Bearer ' + token;
     }
     next();
   })
   .use(postgraphile)
-  .post('/auth',
+  .post(AppConfig.api.auth,
     express.json(),
     async (req: Request, res: Response) => {
       try {
@@ -54,7 +52,7 @@ express()
         });
         jwt = data && data.authenticate && data.authenticate.jwtToken;
         if (jwt) {
-          res.cookie(JWTCookie.name, jwt, JWTCookie.config);
+          res.cookie(AppConfig.cookies.jwt.name, jwt, AppConfig.cookies.jwt.options);
           res.status(200).json({
             claims: jsonwebtoken.decode(jwt),
           });
@@ -77,9 +75,9 @@ express()
       }
     },
   )
-  .delete('/auth', (_: Request, res: Response) => {
+  .delete(AppConfig.api.auth, (_: Request, res: Response) => {
     try {
-      res.clearCookie(JWTCookie.name);
+      res.clearCookie(AppConfig.cookies.jwt.name);
       res.status(200).end();
     } catch (e) {
       if (e.graphQLErrors && e.graphQLErrors[0]) {
@@ -95,7 +93,7 @@ express()
   })
   .use(
     (req: Request, res: Response, next: NextFunction) => {
-      const token = req.cookies[JWTCookie.name];
+      const token = req.cookies[AppConfig.cookies.jwt.name];
       const claims = token && jsonwebtoken.decode(token);
       return sapper.middleware({
         session: () => {

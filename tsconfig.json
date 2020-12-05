@@ -15,26 +15,26 @@
         "moduleResolution": "node",
         "baseUrl": ".",
         "paths": {
-          "*": ["src*"],
-          "@static*": ["static*"],
-          "@components*": ["src/components*"],
-          "@models*": ["src/models*"],
-          "@services*": ["src/services*"],
-          "@stores*": ["src/stores*"],
-          "@repos*": ["src/repos*"],
-          "@utils*": ["src/utils*"]
+            "*": ["src*"],
+            "@static*": ["static*"],
+            "@components*": ["src/components*"],
+            "@models*": ["src/models*"],
+            "@services*": ["src/services*"],
+            "@stores*": ["src/stores*"],
+            "@repos*": ["src/repos*"],
+            "@utils*": ["src/utils*"]
         },
         "esModuleInterop": true,
         "sourceMap": true,
         "strict": true,
         "rootDir": "./src",
-        "typeRoots": ["./typings", "./node_modules/@types"],
-        "types": ["svelte", "node", "@sapper"]
+        "typeRoots": ["./typings/@sapper", "./typings/@app", "./node_modules/@types"],
+        "types": ["svelte", "node"]
     },
     "include": [
         "src/**/*",
         "src/node_modules/**/*", 
-        "typings"
+        "typings/**/*"
     ],
     "exclude": [
         "node_modules/*",

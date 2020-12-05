@@ -6,7 +6,7 @@ import AppConfig from '@app/config';
 
 const defaultLinkOptions = {
   // You should use an absolute URL here
-  uri: AppConfig.api.graphql,
+  uri: `${AppConfig.api.root}${AppConfig.api.graphql}`,
   fetch,
   credentials: 'same-origin',
 };

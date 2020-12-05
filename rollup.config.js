@@ -8,7 +8,6 @@ import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup';
 import pkg from './package.json';
-import typescriptCompiler from 'typescript';
 import alias from '@rollup/plugin-alias';
 import path from 'path';
 import toml from 'rollup-plugin-toml';
@@ -95,7 +94,6 @@ export default {
         sourceMap: !!sourcemap,
       }),
       typescript({
-        typescript: typescriptCompiler,
         noEmitOnError: !dev,
         sourceMap: !!sourcemap,
         tsconfig: './tsconfig.json',
@@ -152,7 +150,6 @@ export default {
         sourceMap: !!sourcemap,
       }),
       typescript({
-        typescript: typescriptCompiler,
         noEmitOnError: !dev,
         sourceMap: !!sourcemap,
         tsconfig: './tsconfig.json',
@@ -179,7 +176,6 @@ export default {
         sourceMap: !!sourcemap,
       }),
       typescript({
-        typescript: typescriptCompiler,
         noEmitOnError: !dev,
         sourceMap: !!sourcemap,
         tsconfig: './tsconfig.json',
