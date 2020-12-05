@@ -8,7 +8,6 @@ generates:
       - src/services/graphql/fragments/account.graphql
       - src/services/graphql/documents/account.graphql
       - src/services/graphql/documents/auth.graphql
-      - src/services/graphql/documents/testing.graphql
     plugins:
       - jsdoc
       - typescript
@@ -25,11 +24,6 @@ generates:
     documents:
       - src/services/graphql/fragments/account.graphql
       - src/services/graphql/documents/account.graphql
-    plugins:
-      - typescript-document-nodes
-  src/services/graphql/generated/documents/testing.ts:
-    documents:
-      - src/services/graphql/documents/testing.graphql
     plugins:
       - typescript-document-nodes
   # continue adding scoped document to be generated

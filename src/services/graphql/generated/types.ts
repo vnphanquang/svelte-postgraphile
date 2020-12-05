@@ -11,14 +11,11 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {Node} [node] - Fetches an object given its globally unique `ID`.
  * @property {AccountsConnection} [accounts] - Reads and enables pagination through a set of `Account`.
  * @property {RoleScopesConnection} [roleScopes] - Reads and enables pagination through a set of `RoleScope`.
- * @property {StartTestingsConnection} [startTestings] - Reads and enables pagination through a set of `StartTesting`.
  * @property {Account} [account]
  * @property {Account} [accountByEmail]
  * @property {RoleScope} [roleScopeByRole]
- * @property {StartTesting} [startTesting]
  * @property {Account} [currentAccount] - Get current logged-in account identified by JWT
  * @property {Account} [accountByNodeId] - Reads a single `Account` using its globally unique `ID`.
- * @property {StartTesting} [startTestingByNodeId] - Reads a single `StartTesting` using its globally unique `ID`.
  */
 
 /**
@@ -46,10 +43,9 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {string} [lastName] - Last name from an account
  * @property {string} email - Unique email of an account
  * @property {string} phone - Phone number of an account
- * @property {boolean} [loginByEmail] - Where account and be authenticated just with email
  * @property {Datetime} [createdAt] - Timestamp of an account creation
  * @property {Datetime} [updatedAt] - Timestamp of an update to account
- * @property {StartTestingsConnection} startTestings - Reads and enables pagination through a set of `StartTesting`.
+ * @property {Datetime} [deletedAt] - Timestamp of the soft deletion of account
  */
 
 /**
@@ -58,7 +54,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  */
 
 /**
- * @typedef {("TESTEE"|"ADMIN")} Role
+ * @typedef {("USER"|"ADMIN")} Role
  */
 
 /**
@@ -68,30 +64,10 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  */
 
 /**
- * A connection to a list of `StartTesting` values.
- * @typedef {Object} StartTestingsConnection
- * @property {Array<StartTesting>} nodes - A list of `StartTesting` objects.
- * @property {Array<StartTestingsEdge>} edges - A list of edges which contains the `StartTesting` and cursor to aid in pagination.
- * @property {PageInfo} pageInfo - Information to aid in pagination.
- * @property {number} totalCount - The count of *all* `StartTesting` you could get from the connection.
- */
-
-/**
- * @typedef {Object} StartTesting
- * @property {string} nodeId - A globally unique identifier. Can be used in various places throughout the system to identify this single value.
- * @property {UUID} id
- * @property {UUID} accountId
- * @property {number} [score]
- * @property {Datetime} [startTime]
- * @property {Datetime} [endTime]
- * @property {Account} [account] - Reads a single `Account` that is related to this `StartTesting`.
- */
-
-/**
- * A `StartTesting` edge in the connection.
- * @typedef {Object} StartTestingsEdge
+ * A `Account` edge in the connection.
+ * @typedef {Object} AccountsEdge
  * @property {Cursor} [cursor] - A cursor for use in pagination.
- * @property {StartTesting} node - The `StartTesting` at the end of the edge.
+ * @property {Account} node - The `Account` at the end of the edge.
  */
 
 /**
@@ -106,26 +82,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {boolean} hasPreviousPage - When paginating backwards, are there more items?
  * @property {Cursor} [startCursor] - When paginating backwards, the cursor to continue.
  * @property {Cursor} [endCursor] - When paginating forwards, the cursor to continue.
- */
-
-/**
- * Methods to use when ordering `StartTesting`.
- * @typedef {("NATURAL"|"ID_ASC"|"ID_DESC"|"ACCOUNT_ID_ASC"|"ACCOUNT_ID_DESC"|"PRIMARY_KEY_ASC"|"PRIMARY_KEY_DESC")} StartTestingsOrderBy
- */
-
-/**
- * A condition to be used against `StartTesting` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- * @typedef {Object} StartTestingCondition
- * @property {UUID} [id] - Checks for equality with the object’s `id` field.
- * @property {UUID} [accountId] - Checks for equality with the object’s `accountId` field.
- */
-
-/**
- * A `Account` edge in the connection.
- * @typedef {Object} AccountsEdge
- * @property {Cursor} [cursor] - A cursor for use in pagination.
- * @property {Account} node - The `Account` at the end of the edge.
  */
 
 /**
@@ -156,7 +112,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  */
 
 /**
- * @typedef {("TESTEE"|"GRADER"|"TEST_MANAGER")} Scope
+ * @typedef {("VISITOR"|"MANAGER")} Scope
  */
 
 /**
@@ -191,11 +147,8 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {DeleteAccountPayload} [deleteAccountByEmail] - Deletes a single `Account` using a unique key.
  * @property {DeleteRoleScopePayload} [deleteRoleScopeByRole] - Deletes a single `RoleScope` using a unique key.
  * @property {AuthenticatePayload} [authenticate] - Create a JWT for account identification and authorization with email & password
- * @property {AuthenticateByEmailPayload} [authenticateByEmail] - Create a JWT for account identification and authorization with only email if enabled
  * @property {ChangePasswordPayload} [changePassword] - Change password of an existing account
- * @property {FinishTestPayload} [finishTest]
  * @property {RegisterAccountPayload} [registerAccount] - Register a single account
- * @property {StartTestPayload} [startTest]
  */
 
 /**
@@ -249,7 +202,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {string} [lastName] - Last name from an account
  * @property {string} [email] - Unique email of an account
  * @property {string} [phone] - Phone number of an account
- * @property {boolean} [loginByEmail] - Where account and be authenticated just with email
+ * @property {Datetime} [deletedAt] - Timestamp of the soft deletion of account
  */
 
 /**
@@ -375,23 +328,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  */
 
 /**
- * The output of our `authenticateByEmail` mutation.
- * @typedef {Object} AuthenticateByEmailPayload
- * @property {string} [clientMutationId] - The exact same `clientMutationId` that was provided in the mutation input,
- * unchanged and unused. May be used by a client to track mutations.
- * @property {JwtToken} [jwtToken]
- * @property {Query} [query] - Our root query field type. Allows us to run any query from our mutation payload.
- */
-
-/**
- * All input for the `authenticateByEmail` mutation.
- * @typedef {Object} AuthenticateByEmailInput
- * @property {string} [clientMutationId] - An arbitrary string value with no semantic meaning. Will be included in the
- * payload verbatim. May be used to track mutations by the client.
- * @property {string} email
- */
-
-/**
  * The output of our `changePassword` mutation.
  * @typedef {Object} ChangePasswordPayload
  * @property {string} [clientMutationId] - The exact same `clientMutationId` that was provided in the mutation input,
@@ -407,26 +343,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * payload verbatim. May be used to track mutations by the client.
  * @property {string} currentPassword
  * @property {string} newPassword
- */
-
-/**
- * The output of our `finishTest` mutation.
- * @typedef {Object} FinishTestPayload
- * @property {string} [clientMutationId] - The exact same `clientMutationId` that was provided in the mutation input,
- * unchanged and unused. May be used by a client to track mutations.
- * @property {StartTesting} [startTesting]
- * @property {Query} [query] - Our root query field type. Allows us to run any query from our mutation payload.
- * @property {Account} [account] - Reads a single `Account` that is related to this `StartTesting`.
- * @property {StartTestingsEdge} [startTestingEdge] - An edge for our `StartTesting`. May be used by Relay 1.
- */
-
-/**
- * All input for the `finishTest` mutation.
- * @typedef {Object} FinishTestInput
- * @property {string} [clientMutationId] - An arbitrary string value with no semantic meaning. Will be included in the
- * payload verbatim. May be used to track mutations by the client.
- * @property {UUID} testId
- * @property {number} score
  */
 
 /**
@@ -448,26 +364,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {string} phone
  * @property {string} [lastName]
  * @property {string} [password]
- * @property {boolean} [loginByEmail]
- */
-
-/**
- * The output of our `startTest` mutation.
- * @typedef {Object} StartTestPayload
- * @property {string} [clientMutationId] - The exact same `clientMutationId` that was provided in the mutation input,
- * unchanged and unused. May be used by a client to track mutations.
- * @property {StartTesting} [startTesting]
- * @property {Query} [query] - Our root query field type. Allows us to run any query from our mutation payload.
- * @property {Account} [account] - Reads a single `Account` that is related to this `StartTesting`.
- * @property {StartTestingsEdge} [startTestingEdge] - An edge for our `StartTesting`. May be used by Relay 1.
- */
-
-/**
- * All input for the `startTest` mutation.
- * @typedef {Object} StartTestInput
- * @property {string} [clientMutationId] - An arbitrary string value with no semantic meaning. Will be included in the
- * payload verbatim. May be used to track mutations by the client.
- * @property {string} userEmail
  */
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -508,18 +404,13 @@ export type Query = Node & {
   accounts?: Maybe<AccountsConnection>;
   /** Reads and enables pagination through a set of `RoleScope`. */
   roleScopes?: Maybe<RoleScopesConnection>;
-  /** Reads and enables pagination through a set of `StartTesting`. */
-  startTestings?: Maybe<StartTestingsConnection>;
   account?: Maybe<Account>;
   accountByEmail?: Maybe<Account>;
   roleScopeByRole?: Maybe<RoleScope>;
-  startTesting?: Maybe<StartTesting>;
   /** Get current logged-in account identified by JWT */
   currentAccount?: Maybe<Account>;
   /** Reads a single `Account` using its globally unique `ID`. */
   accountByNodeId?: Maybe<Account>;
-  /** Reads a single `StartTesting` using its globally unique `ID`. */
-  startTestingByNodeId?: Maybe<StartTesting>;
 };
 
 
@@ -554,18 +445,6 @@ export type QueryRoleScopesArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryStartTestingsArgs = {
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['Cursor']>;
-  after?: Maybe<Scalars['Cursor']>;
-  orderBy?: Maybe<Array<StartTestingsOrderBy>>;
-  condition?: Maybe<StartTestingCondition>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryAccountArgs = {
   id: Scalars['UUID'];
 };
@@ -584,19 +463,7 @@ export type QueryRoleScopeByRoleArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryStartTestingArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryAccountByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryStartTestingByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
@@ -636,68 +503,28 @@ export type Account = Node & {
   email: Scalars['String'];
   /** Phone number of an account */
   phone: Scalars['String'];
-  /** Where account and be authenticated just with email */
-  loginByEmail?: Maybe<Scalars['Boolean']>;
   /** Timestamp of an account creation */
   createdAt?: Maybe<Scalars['Datetime']>;
   /** Timestamp of an update to account */
   updatedAt?: Maybe<Scalars['Datetime']>;
-  /** Reads and enables pagination through a set of `StartTesting`. */
-  startTestings: StartTestingsConnection;
-};
-
-
-/** A registered account */
-export type AccountStartTestingsArgs = {
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['Cursor']>;
-  after?: Maybe<Scalars['Cursor']>;
-  orderBy?: Maybe<Array<StartTestingsOrderBy>>;
-  condition?: Maybe<StartTestingCondition>;
+  /** Timestamp of the soft deletion of account */
+  deletedAt?: Maybe<Scalars['Datetime']>;
 };
 
 
 export enum Role {
-  Testee = 'TESTEE',
+  User = 'USER',
   Admin = 'ADMIN'
 }
 
 
-/** A connection to a list of `StartTesting` values. */
-export type StartTestingsConnection = {
-  __typename?: 'StartTestingsConnection';
-  /** A list of `StartTesting` objects. */
-  nodes: Array<StartTesting>;
-  /** A list of edges which contains the `StartTesting` and cursor to aid in pagination. */
-  edges: Array<StartTestingsEdge>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `StartTesting` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-export type StartTesting = Node & {
-  __typename?: 'StartTesting';
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
-  id: Scalars['UUID'];
-  accountId: Scalars['UUID'];
-  score?: Maybe<Scalars['Int']>;
-  startTime?: Maybe<Scalars['Datetime']>;
-  endTime?: Maybe<Scalars['Datetime']>;
-  /** Reads a single `Account` that is related to this `StartTesting`. */
-  account?: Maybe<Account>;
-};
-
-/** A `StartTesting` edge in the connection. */
-export type StartTestingsEdge = {
-  __typename?: 'StartTestingsEdge';
+/** A `Account` edge in the connection. */
+export type AccountsEdge = {
+  __typename?: 'AccountsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
-  /** The `StartTesting` at the end of the edge. */
-  node: StartTesting;
+  /** The `Account` at the end of the edge. */
+  node: Account;
 };
 
 
@@ -712,37 +539,6 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['Cursor']>;
   /** When paginating forwards, the cursor to continue. */
   endCursor?: Maybe<Scalars['Cursor']>;
-};
-
-/** Methods to use when ordering `StartTesting`. */
-export enum StartTestingsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  AccountIdAsc = 'ACCOUNT_ID_ASC',
-  AccountIdDesc = 'ACCOUNT_ID_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
-}
-
-/**
- * A condition to be used against `StartTesting` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export type StartTestingCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `accountId` field. */
-  accountId?: Maybe<Scalars['UUID']>;
-};
-
-/** A `Account` edge in the connection. */
-export type AccountsEdge = {
-  __typename?: 'AccountsEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `Account` at the end of the edge. */
-  node: Account;
 };
 
 /** Methods to use when ordering `Account`. */
@@ -784,9 +580,8 @@ export type RoleScope = {
 };
 
 export enum Scope {
-  Testee = 'TESTEE',
-  Grader = 'GRADER',
-  TestManager = 'TEST_MANAGER'
+  Visitor = 'VISITOR',
+  Manager = 'MANAGER'
 }
 
 /** A `RoleScope` edge in the connection. */
@@ -837,14 +632,10 @@ export type Mutation = {
   deleteRoleScopeByRole?: Maybe<DeleteRoleScopePayload>;
   /** Create a JWT for account identification and authorization with email & password */
   authenticate?: Maybe<AuthenticatePayload>;
-  /** Create a JWT for account identification and authorization with only email if enabled */
-  authenticateByEmail?: Maybe<AuthenticateByEmailPayload>;
   /** Change password of an existing account */
   changePassword?: Maybe<ChangePasswordPayload>;
-  finishTest?: Maybe<FinishTestPayload>;
   /** Register a single account */
   registerAccount?: Maybe<RegisterAccountPayload>;
-  startTest?: Maybe<StartTestPayload>;
 };
 
 
@@ -909,32 +700,14 @@ export type MutationAuthenticateArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationAuthenticateByEmailArgs = {
-  input: AuthenticateByEmailInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationChangePasswordArgs = {
   input: ChangePasswordInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationFinishTestArgs = {
-  input: FinishTestInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterAccountArgs = {
   input: RegisterAccountInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationStartTestArgs = {
-  input: StartTestInput;
 };
 
 /** The output of our create `RoleScope` mutation. */
@@ -1021,8 +794,8 @@ export type AccountPatch = {
   email?: Maybe<Scalars['String']>;
   /** Phone number of an account */
   phone?: Maybe<Scalars['String']>;
-  /** Where account and be authenticated just with email */
-  loginByEmail?: Maybe<Scalars['Boolean']>;
+  /** Timestamp of the soft deletion of account */
+  deletedAt?: Maybe<Scalars['Datetime']>;
 };
 
 /** All input for the `updateAccount` mutation. */
@@ -1205,29 +978,6 @@ export type AuthenticateInput = {
   password: Scalars['String'];
 };
 
-/** The output of our `authenticateByEmail` mutation. */
-export type AuthenticateByEmailPayload = {
-  __typename?: 'AuthenticateByEmailPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  jwtToken?: Maybe<Scalars['JwtToken']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-/** All input for the `authenticateByEmail` mutation. */
-export type AuthenticateByEmailInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  email: Scalars['String'];
-};
-
 /** The output of our `changePassword` mutation. */
 export type ChangePasswordPayload = {
   __typename?: 'ChangePasswordPayload';
@@ -1250,40 +1000,6 @@ export type ChangePasswordInput = {
   clientMutationId?: Maybe<Scalars['String']>;
   currentPassword: Scalars['String'];
   newPassword: Scalars['String'];
-};
-
-/** The output of our `finishTest` mutation. */
-export type FinishTestPayload = {
-  __typename?: 'FinishTestPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  startTesting?: Maybe<StartTesting>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Account` that is related to this `StartTesting`. */
-  account?: Maybe<Account>;
-  /** An edge for our `StartTesting`. May be used by Relay 1. */
-  startTestingEdge?: Maybe<StartTestingsEdge>;
-};
-
-
-/** The output of our `finishTest` mutation. */
-export type FinishTestPayloadStartTestingEdgeArgs = {
-  orderBy?: Maybe<Array<StartTestingsOrderBy>>;
-};
-
-/** All input for the `finishTest` mutation. */
-export type FinishTestInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  testId: Scalars['UUID'];
-  score: Scalars['Int'];
 };
 
 /** The output of our `registerAccount` mutation. */
@@ -1311,40 +1027,6 @@ export type RegisterAccountInput = {
   phone: Scalars['String'];
   lastName?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
-  loginByEmail?: Maybe<Scalars['Boolean']>;
-};
-
-/** The output of our `startTest` mutation. */
-export type StartTestPayload = {
-  __typename?: 'StartTestPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  startTesting?: Maybe<StartTesting>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Account` that is related to this `StartTesting`. */
-  account?: Maybe<Account>;
-  /** An edge for our `StartTesting`. May be used by Relay 1. */
-  startTestingEdge?: Maybe<StartTestingsEdge>;
-};
-
-
-/** The output of our `startTest` mutation. */
-export type StartTestPayloadStartTestingEdgeArgs = {
-  orderBy?: Maybe<Array<StartTestingsOrderBy>>;
-};
-
-/** All input for the `startTest` mutation. */
-export type StartTestInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  userEmail: Scalars['String'];
 };
 
 export type CurrentAccountQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1395,33 +1077,12 @@ export type UpdateAccountByIdMutationVariables = Exact<{
   phone?: Maybe<Scalars['String']>;
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
-  loginByEmail?: Maybe<Scalars['Boolean']>;
 }>;
 
 
 export type UpdateAccountByIdMutation = (
   { __typename?: 'Mutation' }
   & { updateAccount?: Maybe<(
-    { __typename?: 'UpdateAccountPayload' }
-    & { account?: Maybe<(
-      { __typename?: 'Account' }
-      & CommonAccountPayloadFragment
-    )> }
-  )> }
-);
-
-export type UpdateAccountByEmailMutationVariables = Exact<{
-  email: Scalars['String'];
-  phone?: Maybe<Scalars['String']>;
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  loginByEmail?: Maybe<Scalars['Boolean']>;
-}>;
-
-
-export type UpdateAccountByEmailMutation = (
-  { __typename?: 'Mutation' }
-  & { updateAccountByEmail?: Maybe<(
     { __typename?: 'UpdateAccountPayload' }
     & { account?: Maybe<(
       { __typename?: 'Account' }
@@ -1446,22 +1107,6 @@ export type DeleteAccountByIdMutation = (
   )> }
 );
 
-export type DeleteAccountByEmailMutationVariables = Exact<{
-  email: Scalars['String'];
-}>;
-
-
-export type DeleteAccountByEmailMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteAccountByEmail?: Maybe<(
-    { __typename?: 'DeleteAccountPayload' }
-    & { account?: Maybe<(
-      { __typename?: 'Account' }
-      & CommonAccountPayloadFragment
-    )> }
-  )> }
-);
-
 export type AuthenticateMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -1476,67 +1121,7 @@ export type AuthenticateMutation = (
   )> }
 );
 
-export type AuthenticateByEmailMutationVariables = Exact<{
-  email: Scalars['String'];
-}>;
-
-
-export type AuthenticateByEmailMutation = (
-  { __typename?: 'Mutation' }
-  & { authenticateByEmail?: Maybe<(
-    { __typename?: 'AuthenticateByEmailPayload' }
-    & Pick<AuthenticateByEmailPayload, 'jwtToken'>
-  )> }
-);
-
-export type FinishTestMutationVariables = Exact<{
-  testId: Scalars['UUID'];
-  score: Scalars['Int'];
-}>;
-
-
-export type FinishTestMutation = (
-  { __typename?: 'Mutation' }
-  & { finishTest?: Maybe<(
-    { __typename?: 'FinishTestPayload' }
-    & { startTesting?: Maybe<(
-      { __typename?: 'StartTesting' }
-      & Pick<StartTesting, 'id' | 'startTime' | 'endTime'>
-    )> }
-  )> }
-);
-
-export type StartTestMutationVariables = Exact<{
-  user_email: Scalars['String'];
-}>;
-
-
-export type StartTestMutation = (
-  { __typename?: 'Mutation' }
-  & { startTest?: Maybe<(
-    { __typename?: 'StartTestPayload' }
-    & { startTesting?: Maybe<(
-      { __typename?: 'StartTesting' }
-      & Pick<StartTesting, 'id' | 'startTime' | 'endTime'>
-    )> }
-  )> }
-);
-
-export type AllStartTestingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AllStartTestingsQuery = (
-  { __typename?: 'Query' }
-  & { startTestings?: Maybe<(
-    { __typename?: 'StartTestingsConnection' }
-    & { nodes: Array<(
-      { __typename?: 'StartTesting' }
-      & Pick<StartTesting, 'endTime' | 'startTime' | 'id'>
-    )> }
-  )> }
-);
-
 export type CommonAccountPayloadFragment = (
   { __typename?: 'Account' }
-  & Pick<Account, 'createdAt' | 'email' | 'firstName' | 'id' | 'lastName' | 'loginByEmail' | 'phone' | 'role' | 'updatedAt'>
+  & Pick<Account, 'createdAt' | 'email' | 'firstName' | 'id' | 'lastName' | 'phone' | 'role' | 'updatedAt'>
 );

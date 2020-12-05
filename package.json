@@ -24,7 +24,7 @@
     "eslint": "eslint",
     "eslint:fix": "eslint --fix ./**/*.js ./src/**/*.ts",
 
-    "dev": "run-s dev:*",
+    "dev": "run-p dev:*",
     "dev:sapper": "sapper dev --port 5252",
     "dev:graphql": "yarn codegen:graphql --watch src/services/graphql/generated/schema.graphql",
     "dev:validate": "yarn validate --watch",

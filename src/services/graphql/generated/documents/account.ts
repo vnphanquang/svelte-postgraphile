@@ -6,7 +6,6 @@ export const CommonAccountPayload = gql`
   firstName
   id
   lastName
-  loginByEmail
   phone
   role
   updatedAt
@@ -38,20 +37,9 @@ export const ChangePassword = gql`
 }
     `;
 export const UpdateAccountById = gql`
-    mutation UpdateAccountById($id: UUID!, $email: String, $phone: String, $firstName: String, $lastName: String, $loginByEmail: Boolean) {
+    mutation UpdateAccountById($id: UUID!, $email: String, $phone: String, $firstName: String, $lastName: String) {
   updateAccount(
-    input: {id: $id, patch: {email: $email, firstName: $firstName, lastName: $lastName, loginByEmail: $loginByEmail, phone: $phone}}
-  ) {
-    account {
-      ...commonAccountPayload
-    }
-  }
-}
-    ${CommonAccountPayload}`;
-export const UpdateAccountByEmail = gql`
-    mutation UpdateAccountByEmail($email: String!, $phone: String, $firstName: String, $lastName: String, $loginByEmail: Boolean) {
-  updateAccountByEmail(
-    input: {email: $email, patch: {email: $email, firstName: $firstName, lastName: $lastName, loginByEmail: $loginByEmail, phone: $phone}}
+    input: {id: $id, patch: {email: $email, firstName: $firstName, lastName: $lastName, phone: $phone}}
   ) {
     account {
       ...commonAccountPayload
@@ -62,15 +50,6 @@ export const UpdateAccountByEmail = gql`
 export const DeleteAccountById = gql`
     mutation DeleteAccountById($id: UUID!) {
   deleteAccount(input: {id: $id}) {
-    account {
-      ...commonAccountPayload
-    }
-  }
-}
-    ${CommonAccountPayload}`;
-export const DeleteAccountByEmail = gql`
-    mutation DeleteAccountByEmail($email: String!) {
-  deleteAccountByEmail(input: {email: $email}) {
     account {
       ...commonAccountPayload
     }

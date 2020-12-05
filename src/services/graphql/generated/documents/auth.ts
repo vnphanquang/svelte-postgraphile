@@ -7,10 +7,3 @@ export const Authenticate = gql`
   }
 }
     `;
-export const AuthenticateByEmail = gql`
-    mutation AuthenticateByEmail($email: String!) {
-  authenticateByEmail(input: {email: $email}) {
-    jwtToken
-  }
-}
-    `;

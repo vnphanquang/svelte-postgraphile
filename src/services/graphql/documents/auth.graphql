@@ -11,14 +11,3 @@ mutation Authenticate(
     jwtToken
   }
 }
-
-mutation AuthenticateByEmail(
-  $email: String!
-) {
-  authenticateByEmail(
-    input: {
-      email: $email
-    }) {
-      jwtToken
-    }
-}

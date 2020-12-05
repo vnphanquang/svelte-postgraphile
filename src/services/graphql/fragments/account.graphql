@@ -4,7 +4,6 @@ fragment commonAccountPayload on Account {
   firstName
   id
   lastName
-  loginByEmail
   phone
   role
   updatedAt
