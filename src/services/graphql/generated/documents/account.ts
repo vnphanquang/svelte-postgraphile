@@ -6,7 +6,6 @@ export const CommonAccountPayload = gql`
   firstName
   id
   lastName
-  phone
   role
   updatedAt
 }
@@ -19,9 +18,9 @@ export const CurrentAccount = gql`
 }
     ${CommonAccountPayload}`;
 export const RegisterAccount = gql`
-    mutation RegisterAccount($firstName: String!, $email: String!, $phone: String!, $lastName: String, $password: String) {
+    mutation RegisterAccount($firstName: String!, $email: String!, $lastName: String, $password: String) {
   registerAccount(
-    input: {firstName: $firstName, email: $email, phone: $phone, lastName: $lastName, password: $password}
+    input: {firstName: $firstName, email: $email, lastName: $lastName, password: $password}
   ) {
     account {
       ...commonAccountPayload
@@ -39,9 +38,9 @@ export const ChangePassword = gql`
 }
     `;
 export const UpdateAccountById = gql`
-    mutation UpdateAccountById($id: UUID!, $email: String, $phone: String, $firstName: String, $lastName: String) {
+    mutation UpdateAccountById($id: UUID!, $email: String, $firstName: String, $lastName: String) {
   updateAccount(
-    input: {id: $id, patch: {email: $email, firstName: $firstName, lastName: $lastName, phone: $phone}}
+    input: {id: $id, patch: {email: $email, firstName: $firstName, lastName: $lastName}}
   ) {
     account {
       ...commonAccountPayload

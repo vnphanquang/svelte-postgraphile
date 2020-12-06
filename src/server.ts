@@ -19,7 +19,9 @@ const dev = mode === 'development';
 
 if (dev) {
   // print out app config
-  console.log('ServerConfig', JSON.stringify(ServerConfig, null, 2));
+  console.log('---------SERVER CONFIG-----------');
+  console.log(JSON.stringify(ServerConfig, null, 2));
+  console.log('---------------------------------');
 }
 
 express()

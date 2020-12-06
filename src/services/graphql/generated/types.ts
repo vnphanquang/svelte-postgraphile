@@ -42,7 +42,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {string} firstName - First name from an account
  * @property {string} [lastName] - Last name from an account
  * @property {string} email - Unique email of an account
- * @property {string} phone - Phone number of an account
  * @property {Datetime} [createdAt] - Timestamp of an account creation
  * @property {Datetime} [updatedAt] - Timestamp of an update to account
  * @property {Datetime} [deletedAt] - Timestamp of the soft deletion of account
@@ -201,7 +200,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {string} [firstName] - First name from an account
  * @property {string} [lastName] - Last name from an account
  * @property {string} [email] - Unique email of an account
- * @property {string} [phone] - Phone number of an account
  * @property {Datetime} [deletedAt] - Timestamp of the soft deletion of account
  */
 
@@ -362,7 +360,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * payload verbatim. May be used to track mutations by the client.
  * @property {string} firstName
  * @property {string} email
- * @property {string} phone
  * @property {string} [lastName]
  * @property {string} [password]
  */
@@ -502,8 +499,6 @@ export type Account = Node & {
   lastName?: Maybe<Scalars['String']>;
   /** Unique email of an account */
   email: Scalars['String'];
-  /** Phone number of an account */
-  phone: Scalars['String'];
   /** Timestamp of an account creation */
   createdAt?: Maybe<Scalars['Datetime']>;
   /** Timestamp of an update to account */
@@ -793,8 +788,6 @@ export type AccountPatch = {
   lastName?: Maybe<Scalars['String']>;
   /** Unique email of an account */
   email?: Maybe<Scalars['String']>;
-  /** Phone number of an account */
-  phone?: Maybe<Scalars['String']>;
   /** Timestamp of the soft deletion of account */
   deletedAt?: Maybe<Scalars['Datetime']>;
 };
@@ -1033,7 +1026,6 @@ export type RegisterAccountInput = {
   clientMutationId?: Maybe<Scalars['String']>;
   firstName: Scalars['String'];
   email: Scalars['String'];
-  phone: Scalars['String'];
   lastName?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
 };
@@ -1052,7 +1044,6 @@ export type CurrentAccountQuery = (
 export type RegisterAccountMutationVariables = Exact<{
   firstName: Scalars['String'];
   email: Scalars['String'];
-  phone: Scalars['String'];
   lastName?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
 }>;
@@ -1086,7 +1077,6 @@ export type ChangePasswordMutation = (
 export type UpdateAccountByIdMutationVariables = Exact<{
   id: Scalars['UUID'];
   email?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
 }>;
@@ -1135,5 +1125,5 @@ export type AuthenticateMutation = (
 
 export type CommonAccountPayloadFragment = (
   { __typename?: 'Account' }
-  & Pick<Account, 'createdAt' | 'email' | 'firstName' | 'id' | 'lastName' | 'phone' | 'role' | 'updatedAt'>
+  & Pick<Account, 'createdAt' | 'email' | 'firstName' | 'id' | 'lastName' | 'role' | 'updatedAt'>
 );

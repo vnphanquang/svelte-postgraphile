@@ -7,7 +7,6 @@ query CurrentAccount {
 mutation RegisterAccount(
   $firstName: String!,
   $email: String!,
-  $phone: String!,
   $lastName: String,
   $password: String
 ) {
@@ -15,7 +14,6 @@ mutation RegisterAccount(
     input: {
       firstName: $firstName,
       email: $email,
-      phone: $phone,
       lastName: $lastName,
       password: $password
     }) {
@@ -41,7 +39,6 @@ mutation ChangePassword(
 mutation UpdateAccountById(
   $id: UUID!,
   $email: String,
-  $phone: String,
   $firstName: String,
   $lastName: String
 ) {
@@ -52,7 +49,6 @@ mutation UpdateAccountById(
         email: $email,
         firstName: $firstName,
         lastName: $lastName,
-        phone: $phone
       }
     }) {
     account {

@@ -2,7 +2,7 @@
 drop function if exists public.change_password(current_password text, new_password text);
 drop function if exists public.current_account();
 drop function if exists public.authenticate("$email" text, "$password" text);
-drop function if exists public.register_account("$first_name" text, "$email" text, "$phone" text, "$last_name "text, "$password" text);
+drop function if exists public.register_account("$first_name" text, "$email" text, "$last_name "text, "$password" text);
 -- drop view if exists public.personal_account;
 drop type if exists public.jwt_token;
 drop policy if exists select_account on public.account;

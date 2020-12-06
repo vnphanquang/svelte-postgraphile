@@ -33,7 +33,6 @@ create table public.account (
     last_name       text                        check (char_length(last_name) < 100),
     password_hash   varchar     not null,
     email           text        not null unique check (email ~* '^.+@.+\..+$'),
-    phone           text        not null,
     created_at      timestamptz                 default now(),
     updated_at      timestamptz,
     deleted_at      timestamptz                 default null
@@ -46,14 +45,13 @@ comment on column public.account.role is E'@omit create,update\nRole type associ
 comment on column public.account.first_name is 'First name from an account';
 comment on column public.account.last_name is 'Last name from an account';
 comment on column public.account.email is 'Unique email of an account';
-comment on column public.account.phone is 'Phone number of an account';
 comment on column public.account.created_at is E'@omit create,update\nTimestamp of an account creation';
 comment on column public.account.updated_at is E'@omit create,update\nTimestamp of an update to account';
 comment on column public.account.deleted_at is E'@omit create\nTimestamp of the soft deletion of account';
 
 drop trigger if exists account_updated_at on public.account;
 create trigger account_updated_at
-    before update of role, first_name, last_name, password_hash, email, phone
+    before update of role, first_name, last_name, password_hash, email
     on public.account
     for each row
 execute procedure common.set_updated_at();
@@ -92,7 +90,6 @@ create type public.jwt_token as (
 create function public.register_account(
     "$first_name"       text,
     "$email"            text,
-    "$phone"            text,
     "$last_name"        text    default '',
     "$password"         text    default 'sveltepost'
 ) returns public.account as $$
@@ -103,20 +100,19 @@ create function public.register_account(
         if found then
             raise exception 'Email % has already been registered', "$email";
         end if;
-        insert into public.account(first_name, last_name, email, phone, password_hash) values
+        insert into public.account(first_name, last_name, email, password_hash) values
             (
                 "$first_name",
                 "$last_name",
                 "$email",
-                "$phone",
                 crypt("$password", gen_salt('bf')) -- blowfish algorithm salt generation
             ) returning * into "$account";
         return "$account";
     end
 $$ language plpgsql strict security definer;
 
-comment on function public.register_account("$first_name" text, "$email" text, "$phone" text, "$last_name" text, "$password" text) is 'Register a single account';
-grant execute on function public.register_account("$first_name" text, "$email" text, "$phone" text, "$last_name" text, "$password" text) to anonymous;
+comment on function public.register_account("$first_name" text, "$email" text, "$last_name" text, "$password" text) is 'Register a single account';
+grant execute on function public.register_account("$first_name" text, "$email" text, "$last_name" text, "$password" text) to anonymous;
 
 --------------public.authenticate----------
 create function public.authenticate(

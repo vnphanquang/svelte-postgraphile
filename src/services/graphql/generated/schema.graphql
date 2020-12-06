@@ -135,9 +135,6 @@ type Account implements Node {
   """Unique email of an account"""
   email: String!
 
-  """Phone number of an account"""
-  phone: String!
-
   """Timestamp of an account creation"""
   createdAt: Datetime
 
@@ -464,9 +461,6 @@ input AccountPatch {
   """Unique email of an account"""
   email: String
 
-  """Phone number of an account"""
-  phone: String
-
   """Timestamp of the soft deletion of account"""
   deletedAt: Datetime
 }
@@ -735,7 +729,6 @@ input RegisterAccountInput {
   clientMutationId: String
   firstName: String!
   email: String!
-  phone: String!
   lastName: String
   password: String
 }

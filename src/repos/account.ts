@@ -3,14 +3,14 @@ import { CurrentAccount, RegisterAccount } from '@services/graphql/generated/doc
 import type { CommonAccountPayloadFragment, CurrentAccountQuery, CurrentAccountQueryVariables, RegisterAccountMutation, RegisterAccountMutationVariables } from '@services/graphql/generated/types';
 
 class AccountRepo {
-  static async register(variables: RegisterAccountMutationVariables):Promise<string|undefined> {
+  static async register(variables: RegisterAccountMutationVariables):Promise<CommonAccountPayloadFragment|undefined> {
     try {
       const { data } = await client.mutate<RegisterAccountMutation, RegisterAccountMutationVariables>({
         mutation: RegisterAccount,
         variables,
       });
-      if (data && data.registerAccount && data.registerAccount.jwtToken) {
-        return data.registerAccount.jwtToken;
+      if (data && data.registerAccount && data.registerAccount.account) {
+        return data.registerAccount.account;
       }
       return undefined;
     } catch (e) {
