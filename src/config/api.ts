@@ -8,7 +8,7 @@ export interface ApiConfig {
 }
 
 const apiConfig: ApiConfig = {
-  url: `${AppEnv.app.host}:${AppEnv.app.port}/`,
+  url: `${AppEnv.app.host}:${AppEnv.app.port}`,
   routes: {
     graphql: '/graphql',
     auth: '/auth',

@@ -81,10 +81,10 @@ create policy delete_account on public.account for delete
 
 -----------public.jwt_token-------------
 create type public.jwt_token as (
-    role        public.role,
-    scopes      public.scope[],
-    id          uuid,
-    first_name  text
+    role    public.role,
+    scopes  public.scope[],
+    id      uuid,
+    name    text
 );
 ----------public.register_account-------------
 create function public.register_account(
@@ -115,7 +115,7 @@ comment on function public.register_account("$first_name" text, "$email" text, "
 grant execute on function public.register_account("$first_name" text, "$email" text, "$last_name" text, "$password" text) to anonymous;
 
 --------------public.authenticate----------
-create function public.authenticate(
+create or replace function public.authenticate(
     "$email" text,
     "$password" text
 ) returns public.jwt_token as $$
@@ -123,9 +123,9 @@ create function public.authenticate(
         "$role"         public.role;
         "$scopes"       public.scope[];
         "$id"           uuid;
-        "$first_name"   text;
+        "$name"   text;
     begin
-        select id, role, first_name into "$id", "$role", "$first_name"
+        select id, role, first_name into "$id", "$role", "$name"
             from public.account
             where email = "$email"
             and password_hash = crypt("$password", password_hash);
@@ -135,7 +135,7 @@ create function public.authenticate(
         select scopes into "$scopes"
             from public.role_scopes
             where role = "$role";
-        return ("$role", "$scopes", "$id", "$first_name")::public.jwt_token;
+        return ("$role", "$scopes", "$id", "$name")::public.jwt_token;
     end
 $$ language plpgsql strict security definer;
 
@@ -143,7 +143,7 @@ comment on function public.authenticate("$email" text, "$password" text) is 'Cre
 grant execute on function public.authenticate("$email" text, "$password" text) to anonymous;
 
 ------------public.current_account------------
-create function public.current_account() returns public.account as $$
+create or replace function public.current_account() returns public.account as $$
     declare
         account public.account;
     begin
@@ -161,7 +161,7 @@ comment on function public.current_account() is 'Get current logged-in account i
 grant execute on function public.current_account() to "user";
 
 -----------public.change_password-------------
-create function public.change_password(current_password text, new_password text)
+create or replace function public.change_password(current_password text, new_password text)
 returns boolean as $$
     declare
         "$account" public.account;

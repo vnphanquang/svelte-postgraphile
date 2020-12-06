@@ -1,20 +1,20 @@
 import { RequestInit } from '@repos/base';
 import ClientConfig from '@config/client';
+import type Session from '@models/Session';
 
 class AuthRepo {
   static BASE_URL: string = `${ClientConfig.api.url}${ClientConfig.api.routes.auth}`
 
-  static async loginWithEmail(email: string):Promise<any> {
+  static async login(email: string, password: string):Promise<any> {
     try {
-      const response: Response = await fetch(`${AuthRepo.BASE_URL}/?byEmail=true`, {
+      const response: Response = await fetch(`${AuthRepo.BASE_URL}`, {
         ...RequestInit, 
         method: 'POST',
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, password }),
       });
       if (response.ok && response.status === 200) {
-        const auth: any = await response.json();
-        // FIXME: auth: { authenticated: boolean, claims: JwtToken }
-        return auth;
+        const session: Session = await response.json();
+        return session;
       } else {
         console.error(`response.ok? ${response.ok}, response.status? ${response.status}`)
         const body = await response.json();
