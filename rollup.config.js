@@ -31,8 +31,9 @@ const aliases = alias({
     { find: '@stores', replacement: path.resolve(__dirname, 'src/stores')},
     { find: '@repos', replacement: path.resolve(__dirname, 'src/repos')},
     { find: '@utils', replacement: path.resolve(__dirname, 'src/utils')},
-    { find: '@app/config', replacement: path.resolve(__dirname, `config/config.${mode}.toml`)},
-    { find: '@app/migrant', replacement: path.resolve(__dirname, `Migrant.toml`)},
+    { find: '@config', replacement: path.resolve(__dirname, 'src/config')},
+    { find: '@env', replacement: path.resolve(__dirname,`src/config/env/env.${mode}.toml` )},
+    { find: '@migrant', replacement: path.resolve(__dirname, `Migrant.toml`)},
   ]
 });
 

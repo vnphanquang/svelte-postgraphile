@@ -1,8 +1,8 @@
-import AppConfig from '@app/config';
 import { RequestInit } from '@repos/base';
+import ClientConfig from '@config/client';
 
 class AuthRepo {
-  static BASE_URL: string = `${AppConfig.api.root}${AppConfig.api.auth}`
+  static BASE_URL: string = `${ClientConfig.api.url}${ClientConfig.api.routes.auth}`
 
   static async loginWithEmail(email: string):Promise<any> {
     try {

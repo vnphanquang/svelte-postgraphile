@@ -1,0 +1,18 @@
+# Required, do not edit
+database_type = "postgres"
+
+# Required database info
+database_name = "sveltepost"
+database_user = "postgres"
+database_password = "sveltepost"
+
+# Configurable database info
+database_host = "localhost"
+database_port = "5555" 
+migration_location = "db/postgres/migrations"
+
+# Extra database connection parameters
+# with the format:
+# [database_params]
+# key = "value"
+[database_params]

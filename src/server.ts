@@ -12,14 +12,14 @@ import type {
   AuthenticateMutation,
   AuthenticateMutationVariables,
 } from '@services/graphql/generated/types';
-import AppConfig from '@app/config';
+import ServerConfig from '@config/server';
 
-const PORT = process.env.PORT;
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 
 if (dev) {
-  console.log('AppConfig', JSON.stringify(AppConfig, null, 2));
+  // print out app config
+  console.log('ServerConfig', JSON.stringify(ServerConfig, null, 2));
 }
 
 express()
@@ -28,15 +28,15 @@ express()
     sirv('static', { dev }),
     cookieParser(),
   )
-  .use(AppConfig.api.graphql, (req: Request, _: Response, next: NextFunction) => {
-    const token = req.cookies[AppConfig.cookies.jwt.name];
+  .use(ServerConfig.api.routes.graphql, (req: Request, _: Response, next: NextFunction) => {
+    const token = req.cookies[ServerConfig.cookies.jwt.name];
     if (token) {
       req.headers.authorization = 'Bearer ' + token;
     }
     next();
   })
   .use(postgraphile)
-  .post(AppConfig.api.auth,
+  .post(ServerConfig.api.routes.auth,
     express.json(),
     async (req: Request, res: Response) => {
       try {
@@ -52,7 +52,10 @@ express()
         });
         jwt = data && data.authenticate && data.authenticate.jwtToken;
         if (jwt) {
-          res.cookie(AppConfig.cookies.jwt.name, jwt, AppConfig.cookies.jwt.options);
+          res.cookie(
+            ServerConfig.cookies.jwt.name, 
+            jwt, 
+            ServerConfig.cookies.jwt.options);
           res.status(200).json({
             claims: jsonwebtoken.decode(jwt),
           });
@@ -75,9 +78,9 @@ express()
       }
     },
   )
-  .delete(AppConfig.api.auth, (_: Request, res: Response) => {
+  .delete(ServerConfig.api.routes.auth, (_: Request, res: Response) => {
     try {
-      res.clearCookie(AppConfig.cookies.jwt.name);
+      res.clearCookie(ServerConfig.cookies.jwt.name);
       res.status(200).end();
     } catch (e) {
       if (e.graphQLErrors && e.graphQLErrors[0]) {
@@ -93,7 +96,7 @@ express()
   })
   .use(
     (req: Request, res: Response, next: NextFunction) => {
-      const token = req.cookies[AppConfig.cookies.jwt.name];
+      const token = req.cookies[ServerConfig.cookies.jwt.name];
       const claims = token && jsonwebtoken.decode(token);
       return sapper.middleware({
         session: () => {
@@ -104,6 +107,6 @@ express()
       })(req, res, next)
     },
   )
-  .listen(PORT, (err?: any) => {
+  .listen(ServerConfig.port, (err?: any) => {
     if (err) console.log('error', err);
   });

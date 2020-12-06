@@ -20,27 +20,21 @@
   "version": "0.0.1",
   "scripts": {
     "postinstall": "bash ./scripts/setup.bash",
-
     "eslint": "eslint",
     "eslint:fix": "eslint --fix ./**/*.js ./src/**/*.ts",
-
     "dev": "run-p dev:*",
     "dev:sapper": "sapper dev --port 5252",
     "dev:graphql": "yarn codegen:graphql --watch src/services/graphql/generated/schema.graphql",
     "dev:validate": "yarn validate --watch",
     "dev:css": "yarn build:css --watch --verbose",
-
     "validate": "svelte-check --ignore src/node_modules/@sapper",
     "codegen:graphql": "graphql-codegen --config codegen.graphql.yaml",
-    
     "bundle:production": "cross-env NODE_ENV=production yarn build",
     "bundle:dev": "cross-env NODE_ENV=development yarn build",
-
     "prebuild": "yarn install && yarn codegen:graphql && yarn validate",
     "build": "run-s build:*",
     "build:css": "postcss src/theme/styles --dir static/styles --ext css",
     "build:sapper": "sapper build --port 5252 --legacy",
-    
     "start": "node __sapper__/build"
   },
   "dependencies": {
@@ -88,6 +82,7 @@
     "@types/compression": "^1.7.0",
     "@types/express": "^4.17.8",
     "@types/isomorphic-fetch": "^0.0.35",
+    "@types/pg": "^7.14.7",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "add": "^2.0.6",

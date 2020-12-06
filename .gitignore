@@ -13,6 +13,3 @@ static/styles/global.css
 # git secret
 .gitsecret/keys/random_seed
 !*.secret
-Migrant.toml
-config/config.development.toml
-config/config.production.toml
