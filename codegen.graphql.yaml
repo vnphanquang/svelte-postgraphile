@@ -5,7 +5,7 @@ generates:
   src/services/graphql/generated/types.ts:
     documents:
       # add all fragments and documents here
-      - src/services/graphql/fragments/account.graphql
+      - src/services/graphql/fragments/commonAccountPayload.graphql
       - src/services/graphql/documents/account.graphql
       - src/services/graphql/documents/auth.graphql
     plugins:
@@ -22,7 +22,7 @@ generates:
       - typescript-document-nodes
   src/services/graphql/generated/documents/account.ts:
     documents:
-      - src/services/graphql/fragments/account.graphql
+      - src/services/graphql/fragments/commonAccountPayload.graphql
       - src/services/graphql/documents/account.graphql
     plugins:
       - typescript-document-nodes

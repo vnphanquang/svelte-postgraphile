@@ -155,6 +155,11 @@ Application can be deployed in various methods. One of the most simple way is:
 3. Set up docker & run postgreSQL as described in [Development Setup](#development-setup)
 4. Setup [pm2] & start application server: `pm2 start yarn --interpreter bash --name sveltepost -- start`
 
+# Todo Checklist
+
+- [ ] Improve Error Handling
+
+
 [sapper]: https://sapper.svelte.dev/docs
 
 [docker.get]: https://docs.docker.com/get-docker/

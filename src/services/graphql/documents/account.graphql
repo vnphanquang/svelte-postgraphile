@@ -19,7 +19,9 @@ mutation RegisterAccount(
       lastName: $lastName,
       password: $password
     }) {
-      jwtToken
+      account {
+        ...commonAccountPayload
+      }
   }
 }
 

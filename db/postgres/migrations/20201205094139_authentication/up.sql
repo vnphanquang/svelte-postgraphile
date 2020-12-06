@@ -83,9 +83,10 @@ create policy delete_account on public.account for delete
 
 -----------public.jwt_token-------------
 create type public.jwt_token as (
-    role public.role,
-    scopes public.scope[],
-    id uuid
+    role        public.role,
+    scopes      public.scope[],
+    id          uuid,
+    first_name  text
 );
 ----------public.register_account-------------
 create function public.register_account(
@@ -94,11 +95,9 @@ create function public.register_account(
     "$phone"            text,
     "$last_name"        text    default '',
     "$password"         text    default 'sveltepost'
-) returns public.jwt_token as $$
+) returns public.account as $$
     declare
-        "$role"    public.role;
-        "$scopes"  public.scope[];
-        "$id"      uuid;
+        "$account" public.account%rowtype;
     begin
         perform from public.account where email = "$email";
         if found then
@@ -111,11 +110,8 @@ create function public.register_account(
                 "$email",
                 "$phone",
                 crypt("$password", gen_salt('bf')) -- blowfish algorithm salt generation
-            ) returning id, role into "$id", "$role";
-        select scopes into "$scopes"
-            from public.role_scopes
-            where role = "$role";
-        return ("$role", "$scopes", "$id")::public.jwt_token;
+            ) returning * into "$account";
+        return "$account";
     end
 $$ language plpgsql strict security definer;
 
@@ -128,11 +124,12 @@ create function public.authenticate(
     "$password" text
 ) returns public.jwt_token as $$
     declare
-        "$role"    public.role;
-        "$scopes"  public.scope[];
-        "$id"      uuid;
+        "$role"         public.role;
+        "$scopes"       public.scope[];
+        "$id"           uuid;
+        "$first_name"   text;
     begin
-        select id, role into "$id", "$role"
+        select id, role, first_name into "$id", "$role", "$first_name"
             from public.account
             where email = "$email"
             and password_hash = crypt("$password", password_hash);
@@ -142,7 +139,7 @@ create function public.authenticate(
         select scopes into "$scopes"
             from public.role_scopes
             where role = "$role";
-        return ("$role", "$scopes", "$id")::public.jwt_token;
+        return ("$role", "$scopes", "$id", "$first_name")::public.jwt_token;
     end
 $$ language plpgsql strict security definer;
 

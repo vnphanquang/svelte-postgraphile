@@ -23,10 +23,12 @@ export const RegisterAccount = gql`
   registerAccount(
     input: {firstName: $firstName, email: $email, phone: $phone, lastName: $lastName, password: $password}
   ) {
-    jwtToken
+    account {
+      ...commonAccountPayload
+    }
   }
 }
-    `;
+    ${CommonAccountPayload}`;
 export const ChangePassword = gql`
     mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
   changePassword(

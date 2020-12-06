@@ -350,8 +350,9 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @typedef {Object} RegisterAccountPayload
  * @property {string} [clientMutationId] - The exact same `clientMutationId` that was provided in the mutation input,
  * unchanged and unused. May be used by a client to track mutations.
- * @property {JwtToken} [jwtToken]
+ * @property {Account} [account]
  * @property {Query} [query] - Our root query field type. Allows us to run any query from our mutation payload.
+ * @property {AccountsEdge} [accountEdge] - An edge for our `Account`. May be used by Relay 1.
  */
 
 /**
@@ -1010,9 +1011,17 @@ export type RegisterAccountPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  jwtToken?: Maybe<Scalars['JwtToken']>;
+  account?: Maybe<Account>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** An edge for our `Account`. May be used by Relay 1. */
+  accountEdge?: Maybe<AccountsEdge>;
+};
+
+
+/** The output of our `registerAccount` mutation. */
+export type RegisterAccountPayloadAccountEdgeArgs = {
+  orderBy?: Maybe<Array<AccountsOrderBy>>;
 };
 
 /** All input for the `registerAccount` mutation. */
@@ -1053,7 +1062,10 @@ export type RegisterAccountMutation = (
   { __typename?: 'Mutation' }
   & { registerAccount?: Maybe<(
     { __typename?: 'RegisterAccountPayload' }
-    & Pick<RegisterAccountPayload, 'jwtToken'>
+    & { account?: Maybe<(
+      { __typename?: 'Account' }
+      & CommonAccountPayloadFragment
+    )> }
   )> }
 );
 

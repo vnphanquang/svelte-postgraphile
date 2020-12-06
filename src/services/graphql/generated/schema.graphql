@@ -712,12 +712,18 @@ type RegisterAccountPayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-  jwtToken: JwtToken
+  account: Account
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """An edge for our `Account`. May be used by Relay 1."""
+  accountEdge(
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AccountsEdge
 }
 
 """All input for the `registerAccount` mutation."""
