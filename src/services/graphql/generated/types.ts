@@ -105,9 +105,10 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  */
 
 /**
+ * Mapping of role to scopes
  * @typedef {Object} RoleScope
- * @property {Role} [role]
- * @property {Array<(Scope|null|undefined)>} [scopes]
+ * @property {Role} [role] - Role of a registered account
+ * @property {Array<(Scope|null|undefined)>} [scopes] - Array of scopes bound to account
  */
 
 /**
@@ -136,7 +137,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
 /**
  * The root mutation type which contains root level fields which mutate data.
  * @typedef {Object} Mutation
- * @property {CreateRoleScopePayload} [createRoleScope] - Creates a single `RoleScope`.
  * @property {UpdateAccountPayload} [updateAccountByNodeId] - Updates a single `Account` using its globally unique id and a patch.
  * @property {UpdateAccountPayload} [updateAccount] - Updates a single `Account` using a unique key and a patch.
  * @property {UpdateAccountPayload} [updateAccountByEmail] - Updates a single `Account` using a unique key and a patch.
@@ -144,35 +144,9 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {DeleteAccountPayload} [deleteAccountByNodeId] - Deletes a single `Account` using its globally unique id.
  * @property {DeleteAccountPayload} [deleteAccount] - Deletes a single `Account` using a unique key.
  * @property {DeleteAccountPayload} [deleteAccountByEmail] - Deletes a single `Account` using a unique key.
- * @property {DeleteRoleScopePayload} [deleteRoleScopeByRole] - Deletes a single `RoleScope` using a unique key.
  * @property {AuthenticatePayload} [authenticate] - Create a JWT for account identification and authorization with email & password
  * @property {ChangePasswordPayload} [changePassword] - Change password of an existing account
  * @property {RegisterAccountPayload} [registerAccount] - Register a single account
- */
-
-/**
- * The output of our create `RoleScope` mutation.
- * @typedef {Object} CreateRoleScopePayload
- * @property {string} [clientMutationId] - The exact same `clientMutationId` that was provided in the mutation input,
- * unchanged and unused. May be used by a client to track mutations.
- * @property {RoleScope} [roleScope] - The `RoleScope` that was created by this mutation.
- * @property {Query} [query] - Our root query field type. Allows us to run any query from our mutation payload.
- * @property {RoleScopesEdge} [roleScopeEdge] - An edge for our `RoleScope`. May be used by Relay 1.
- */
-
-/**
- * All input for the create `RoleScope` mutation.
- * @typedef {Object} CreateRoleScopeInput
- * @property {string} [clientMutationId] - An arbitrary string value with no semantic meaning. Will be included in the
- * payload verbatim. May be used to track mutations by the client.
- * @property {RoleScopeInput} roleScope - The `RoleScope` to be created by this mutation.
- */
-
-/**
- * An input for mutations affecting `RoleScope`
- * @typedef {Object} RoleScopeInput
- * @property {Role} [role]
- * @property {Array<(Scope|null|undefined)>} [scopes]
  */
 
 /**
@@ -237,14 +211,14 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {string} [clientMutationId] - An arbitrary string value with no semantic meaning. Will be included in the
  * payload verbatim. May be used to track mutations by the client.
  * @property {RoleScopePatch} patch - An object where the defined keys will be set on the `RoleScope` being updated.
- * @property {Role} role
+ * @property {Role} role - Role of a registered account
  */
 
 /**
  * Represents an update to a `RoleScope`. Fields that are set will be updated.
  * @typedef {Object} RoleScopePatch
- * @property {Role} [role]
- * @property {Array<(Scope|null|undefined)>} [scopes]
+ * @property {Role} [role] - Role of a registered account
+ * @property {Array<(Scope|null|undefined)>} [scopes] - Array of scopes bound to account
  */
 
 /**
@@ -280,25 +254,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
  * @property {string} [clientMutationId] - An arbitrary string value with no semantic meaning. Will be included in the
  * payload verbatim. May be used to track mutations by the client.
  * @property {string} email - Unique email of an account
- */
-
-/**
- * The output of our delete `RoleScope` mutation.
- * @typedef {Object} DeleteRoleScopePayload
- * @property {string} [clientMutationId] - The exact same `clientMutationId` that was provided in the mutation input,
- * unchanged and unused. May be used by a client to track mutations.
- * @property {RoleScope} [roleScope] - The `RoleScope` that was deleted by this mutation.
- * @property {string} [deletedRoleScopeNodeId]
- * @property {Query} [query] - Our root query field type. Allows us to run any query from our mutation payload.
- * @property {RoleScopesEdge} [roleScopeEdge] - An edge for our `RoleScope`. May be used by Relay 1.
- */
-
-/**
- * All input for the `deleteRoleScopeByRole` mutation.
- * @typedef {Object} DeleteRoleScopeByRoleInput
- * @property {string} [clientMutationId] - An arbitrary string value with no semantic meaning. Will be included in the
- * payload verbatim. May be used to track mutations by the client.
- * @property {Role} role
  */
 
 /**
@@ -569,9 +524,12 @@ export type RoleScopesConnection = {
   totalCount: Scalars['Int'];
 };
 
+/** Mapping of role to scopes */
 export type RoleScope = {
   __typename?: 'RoleScope';
+  /** Role of a registered account */
   role?: Maybe<Role>;
+  /** Array of scopes bound to account */
   scopes?: Maybe<Array<Maybe<Scope>>>;
 };
 
@@ -608,8 +566,6 @@ export type RoleScopeCondition = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Creates a single `RoleScope`. */
-  createRoleScope?: Maybe<CreateRoleScopePayload>;
   /** Updates a single `Account` using its globally unique id and a patch. */
   updateAccountByNodeId?: Maybe<UpdateAccountPayload>;
   /** Updates a single `Account` using a unique key and a patch. */
@@ -624,20 +580,12 @@ export type Mutation = {
   deleteAccount?: Maybe<DeleteAccountPayload>;
   /** Deletes a single `Account` using a unique key. */
   deleteAccountByEmail?: Maybe<DeleteAccountPayload>;
-  /** Deletes a single `RoleScope` using a unique key. */
-  deleteRoleScopeByRole?: Maybe<DeleteRoleScopePayload>;
   /** Create a JWT for account identification and authorization with email & password */
   authenticate?: Maybe<AuthenticatePayload>;
   /** Change password of an existing account */
   changePassword?: Maybe<ChangePasswordPayload>;
   /** Register a single account */
   registerAccount?: Maybe<RegisterAccountPayload>;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateRoleScopeArgs = {
-  input: CreateRoleScopeInput;
 };
 
 
@@ -684,12 +632,6 @@ export type MutationDeleteAccountByEmailArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRoleScopeByRoleArgs = {
-  input: DeleteRoleScopeByRoleInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationAuthenticateArgs = {
   input: AuthenticateInput;
 };
@@ -704,45 +646,6 @@ export type MutationChangePasswordArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterAccountArgs = {
   input: RegisterAccountInput;
-};
-
-/** The output of our create `RoleScope` mutation. */
-export type CreateRoleScopePayload = {
-  __typename?: 'CreateRoleScopePayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `RoleScope` that was created by this mutation. */
-  roleScope?: Maybe<RoleScope>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** An edge for our `RoleScope`. May be used by Relay 1. */
-  roleScopeEdge?: Maybe<RoleScopesEdge>;
-};
-
-
-/** The output of our create `RoleScope` mutation. */
-export type CreateRoleScopePayloadRoleScopeEdgeArgs = {
-  orderBy?: Maybe<Array<RoleScopesOrderBy>>;
-};
-
-/** All input for the create `RoleScope` mutation. */
-export type CreateRoleScopeInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `RoleScope` to be created by this mutation. */
-  roleScope: RoleScopeInput;
-};
-
-/** An input for mutations affecting `RoleScope` */
-export type RoleScopeInput = {
-  role?: Maybe<Role>;
-  scopes?: Maybe<Array<Maybe<Scope>>>;
 };
 
 /** The output of our update `Account` mutation. */
@@ -849,12 +752,15 @@ export type UpdateRoleScopeByRoleInput = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `RoleScope` being updated. */
   patch: RoleScopePatch;
+  /** Role of a registered account */
   role: Role;
 };
 
 /** Represents an update to a `RoleScope`. Fields that are set will be updated. */
 export type RoleScopePatch = {
+  /** Role of a registered account */
   role?: Maybe<Role>;
+  /** Array of scopes bound to account */
   scopes?: Maybe<Array<Maybe<Scope>>>;
 };
 
@@ -912,39 +818,6 @@ export type DeleteAccountByEmailInput = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Unique email of an account */
   email: Scalars['String'];
-};
-
-/** The output of our delete `RoleScope` mutation. */
-export type DeleteRoleScopePayload = {
-  __typename?: 'DeleteRoleScopePayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `RoleScope` that was deleted by this mutation. */
-  roleScope?: Maybe<RoleScope>;
-  deletedRoleScopeNodeId?: Maybe<Scalars['ID']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** An edge for our `RoleScope`. May be used by Relay 1. */
-  roleScopeEdge?: Maybe<RoleScopesEdge>;
-};
-
-
-/** The output of our delete `RoleScope` mutation. */
-export type DeleteRoleScopePayloadRoleScopeEdgeArgs = {
-  orderBy?: Maybe<Array<RoleScopesOrderBy>>;
-};
-
-/** All input for the `deleteRoleScopeByRole` mutation. */
-export type DeleteRoleScopeByRoleInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  role: Role;
 };
 
 /** The output of our `authenticate` mutation. */
@@ -1120,6 +993,19 @@ export type AuthenticateMutation = (
   & { authenticate?: Maybe<(
     { __typename?: 'AuthenticatePayload' }
     & Pick<AuthenticatePayload, 'jwtToken'>
+  )> }
+);
+
+export type GetScopesByRoleQueryVariables = Exact<{
+  role: Role;
+}>;
+
+
+export type GetScopesByRoleQuery = (
+  { __typename?: 'Query' }
+  & { roleScopeByRole?: Maybe<(
+    { __typename?: 'RoleScope' }
+    & Pick<RoleScope, 'scopes' | 'role'>
   )> }
 );
 

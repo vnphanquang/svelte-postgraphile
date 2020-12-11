@@ -917,6 +917,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@beyonk/sapper-rbac@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@beyonk/sapper-rbac/-/sapper-rbac-0.0.3.tgz#46fdbce247568e86c1055565a317e0b3e5d5803b"
+  integrity sha512-TUzWsoCbahZIIWq17mDvWyGlioKnp7v+XaqMFHC2/ESyS+DlcdUi5pqLyRUFg36etaHWZ+LXu7LhoF5vYEQLgw==
+
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"

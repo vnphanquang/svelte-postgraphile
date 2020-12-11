@@ -18,11 +18,24 @@ create table public.role_scopes (
     scopes public.scope[]
 );
 
+comment on table public.role_scopes is E'@omit create,delete\nMapping of role to scopes';
+comment on column public.role_scopes.role is 'Role of a registered account';
+comment on column public.role_scopes.scopes is 'Array of scopes bound to account';
+
 insert into public.role_scopes (role, scopes)
 values ('user'::public.role, array ['visitor']::public.scope[]),
       ('admin'::public.role, array ['visitor', 'manager']::public.scope[]);
 
+grant select on public.role_scopes to "user";
 grant update on public.role_scopes to admin;
+
+alter table public.role_scopes enable row level security;
+
+create policy select_role_scopes on public.role_scopes for select
+    using (
+        role = current_setting('jwt.claims.role', true)::public.role
+        or current_setting('jwt.claims.role')::public.role = 'admin'
+    );
 
 -----------public.account-------------
 drop table if exists public.account;
@@ -80,14 +93,16 @@ create policy delete_account on public.account for delete
     );
 
 -----------public.jwt_token-------------
+drop type if exists public.jwt_token;
 create type public.jwt_token as (
     role    public.role,
-    scopes  public.scope[],
     id      uuid,
-    name    text
+    name    text,
+    exp     integer,
+    iss     text default 'test'
 );
 ----------public.register_account-------------
-create function public.register_account(
+create or replace function public.register_account(
     "$first_name"       text,
     "$email"            text,
     "$last_name"        text    default '',
@@ -120,10 +135,9 @@ create or replace function public.authenticate(
     "$password" text
 ) returns public.jwt_token as $$
     declare
-        "$role"         public.role;
-        "$scopes"       public.scope[];
-        "$id"           uuid;
-        "$name"   text;
+        "$role" public.role;
+        "$id"   uuid;
+        "$name" text;
     begin
         select id, role, first_name into "$id", "$role", "$name"
             from public.account
@@ -132,10 +146,12 @@ create or replace function public.authenticate(
         if not found then
             raise exception 'No account found with such email or password';
         end if;
-        select scopes into "$scopes"
-            from public.role_scopes
-            where role = "$role";
-        return ("$role", "$scopes", "$id", "$name")::public.jwt_token;
+        return (
+            "$role",
+            "$id",
+            "$name",
+            extract(epoch from now() + interval '7 days')
+        )::public.jwt_token;
     end
 $$ language plpgsql strict security definer;
 

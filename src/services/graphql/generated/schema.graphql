@@ -227,8 +227,12 @@ type RoleScopesConnection {
   totalCount: Int!
 }
 
+"""Mapping of role to scopes"""
 type RoleScope {
+  """Role of a registered account"""
   role: Role
+
+  """Array of scopes bound to account"""
   scopes: [Scope]
 }
 
@@ -266,14 +270,6 @@ input RoleScopeCondition {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
-  """Creates a single `RoleScope`."""
-  createRoleScope(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateRoleScopeInput!
-  ): CreateRoleScopePayload
-
   """Updates a single `Account` using its globally unique id and a patch."""
   updateAccountByNodeId(
     """
@@ -330,14 +326,6 @@ type Mutation {
     input: DeleteAccountByEmailInput!
   ): DeleteAccountPayload
 
-  """Deletes a single `RoleScope` using a unique key."""
-  deleteRoleScopeByRole(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteRoleScopeByRoleInput!
-  ): DeleteRoleScopePayload
-
   """
   Create a JWT for account identification and authorization with email & password
   """
@@ -363,47 +351,6 @@ type Mutation {
     """
     input: RegisterAccountInput!
   ): RegisterAccountPayload
-}
-
-"""The output of our create `RoleScope` mutation."""
-type CreateRoleScopePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `RoleScope` that was created by this mutation."""
-  roleScope: RoleScope
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """An edge for our `RoleScope`. May be used by Relay 1."""
-  roleScopeEdge(
-    """The method to use when ordering `RoleScope`."""
-    orderBy: [RoleScopesOrderBy!] = [NATURAL]
-  ): RoleScopesEdge
-}
-
-"""All input for the create `RoleScope` mutation."""
-input CreateRoleScopeInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `RoleScope` to be created by this mutation."""
-  roleScope: RoleScopeInput!
-}
-
-"""An input for mutations affecting `RoleScope`"""
-input RoleScopeInput {
-  role: Role
-  scopes: [Scope]
 }
 
 """The output of our update `Account` mutation."""
@@ -534,6 +481,8 @@ input UpdateRoleScopeByRoleInput {
   An object where the defined keys will be set on the `RoleScope` being updated.
   """
   patch: RoleScopePatch!
+
+  """Role of a registered account"""
   role: Role!
 }
 
@@ -541,7 +490,10 @@ input UpdateRoleScopeByRoleInput {
 Represents an update to a `RoleScope`. Fields that are set will be updated.
 """
 input RoleScopePatch {
+  """Role of a registered account"""
   role: Role
+
+  """Array of scopes bound to account"""
   scopes: [Scope]
 }
 
@@ -605,40 +557,6 @@ input DeleteAccountByEmailInput {
 
   """Unique email of an account"""
   email: String!
-}
-
-"""The output of our delete `RoleScope` mutation."""
-type DeleteRoleScopePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `RoleScope` that was deleted by this mutation."""
-  roleScope: RoleScope
-  deletedRoleScopeNodeId: ID
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """An edge for our `RoleScope`. May be used by Relay 1."""
-  roleScopeEdge(
-    """The method to use when ordering `RoleScope`."""
-    orderBy: [RoleScopesOrderBy!] = [NATURAL]
-  ): RoleScopesEdge
-}
-
-"""All input for the `deleteRoleScopeByRole` mutation."""
-input DeleteRoleScopeByRoleInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  role: Role!
 }
 
 """The output of our `authenticate` mutation."""

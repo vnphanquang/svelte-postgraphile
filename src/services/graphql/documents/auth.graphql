@@ -11,3 +11,10 @@ mutation Authenticate(
     jwtToken
   }
 }
+
+query GetScopesByRole($role: Role!) {
+  roleScopeByRole(role: $role) {
+    scopes
+    role
+  }
+}

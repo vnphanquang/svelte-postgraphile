@@ -130,7 +130,13 @@ See [git-secret][] documentation for use of unpacking or changing secrets!
 
 ## Git Hooks
 
-The project has some preset git hooks at `scripts/.githooks` folder and can be setup with `bash ./scripts/setup.bash`
+The project has some preset git hooks at `scripts/.githooks` folder and can be setup with:
+
+```bash
+# run at project root
+bash ./scripts/setup.bash
+```
+
 - To enforce [Angular Commit Style Guide][angular.commit-style-guide], uncomment all of [commit-msg] file
 - To enforce `svelte-check` on commit, uncomment the `lint & format` section in [pre-commit]
 
@@ -158,6 +164,9 @@ Application can be deployed in various methods. One of the most simple way is:
 # Todo Checklist
 
 - [ ] Improve Error Handling
+- [ ] Add JSDoc documentation
+- [ ] Configure for compatibility of Svelte with `Nullish coalesce` and `Optional chaining`
+- [ ] Self build RBAC (based on `@beyonk/sapper-rbac`)
 
 
 [sapper]: https://sapper.svelte.dev/docs

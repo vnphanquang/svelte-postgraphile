@@ -38,7 +38,7 @@
     "start": "node __sapper__/build"
   },
   "dependencies": {
-    "@graphile-contrib/pg-simplify-inflector": "^6.0.0",
+    "@graphile-contrib/pg-simplify-inflector": "^5.0.0",
     "@graphile/operation-hooks": "^1.0.0",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
@@ -62,6 +62,7 @@
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/runtime": "^7.11.2",
+    "@beyonk/sapper-rbac": "^0.0.3",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",

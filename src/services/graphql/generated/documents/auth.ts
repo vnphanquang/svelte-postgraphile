@@ -7,3 +7,11 @@ export const Authenticate = gql`
   }
 }
     `;
+export const GetScopesByRole = gql`
+    query GetScopesByRole($role: Role!) {
+  roleScopeByRole(role: $role) {
+    scopes
+    role
+  }
+}
+    `;

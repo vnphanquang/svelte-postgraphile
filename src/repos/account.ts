@@ -9,10 +9,8 @@ class AccountRepo {
         mutation: RegisterAccount,
         variables,
       });
-      if (data && data.registerAccount && data.registerAccount.account) {
-        return data.registerAccount.account;
-      }
-      return undefined;
+      const account = data && data.registerAccount && data.registerAccount.account;
+      return account || undefined;
     } catch (e) {
       console.error('Repo*Account*register: ', e);
       if (e.graphQLErrors && e.graphQLErrors[0]) {
@@ -28,11 +26,8 @@ class AccountRepo {
       const { data } = await client.query<CurrentAccountQuery, CurrentAccountQueryVariables>({
         query: CurrentAccount,
       });
-      if (data && data.currentAccount) {
-        return data.currentAccount;
-      } else {
-        return undefined;
-      }
+      const currentAccount = data && data.currentAccount;
+      return currentAccount || undefined;
     } catch (e) {
       console.error('Repo*Account*current: ', e);
       if (e.graphQLErrors && e.graphQLErrors[0]) {
