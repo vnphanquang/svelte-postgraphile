@@ -1,4 +1,4 @@
-import { RequestInit } from '@repos/base';
+import { RequestInit } from '@api/base';
 import ClientConfig from '@config/client';
 import type Session from '@models/Session';
 import type {
@@ -12,12 +12,12 @@ import type {
 import { Authenticate, GetScopesByRole } from '@services/graphql/generated/documents/auth';
 import apolloClient from '@services/graphql/apollo';
 
-class AuthRepo {
+class AuthApi {
   static BASE_URL: string = `${ClientConfig.api.url}${ClientConfig.api.routes.auth}`
 
   static async login(email: string, password: string): Promise<any> {
     try {
-      const response: Response = await fetch(`${AuthRepo.BASE_URL}`, {
+      const response: Response = await fetch(`${AuthApi.BASE_URL}`, {
         ...RequestInit, 
         method: 'POST',
         body: JSON.stringify({ email, password }),
@@ -31,14 +31,14 @@ class AuthRepo {
         throw new Error(body.error);
       }
     } catch (e) {
-      console.error('Repo*Auth*loginWithEmail', e);
+      console.error('Api*Auth*loginWithEmail', e);
       throw e;
     }
   }
 
   static async logout(): Promise<true> {
     try {
-      const response: Response = await fetch(`${AuthRepo.BASE_URL}`, {
+      const response: Response = await fetch(`${AuthApi.BASE_URL}`, {
         ...RequestInit, 
         method: 'DELETE',
       });
@@ -50,7 +50,7 @@ class AuthRepo {
         throw new Error(body.error);
       }
       } catch (e) {
-      console.error('Repo*Auth*logout', e);
+      console.error('Api*Auth*logout', e);
       throw e;
     }
   }
@@ -67,7 +67,7 @@ class AuthRepo {
       const jwt = data && data.authenticate && data.authenticate.jwtToken;
       return jwt || undefined;
     } catch (e) {
-      console.error('Repo*Account*register: ', e);
+      console.error('Api*Account*register: ', e);
       if (e.graphQLErrors && e.graphQLErrors[0]) {
         throw new Error(e.graphQLErrors[0].message);
       } else {
@@ -87,7 +87,7 @@ class AuthRepo {
       const scopes = data && data.roleScopeByRole && data.roleScopeByRole.scopes;
       return scopes as Scope[] || [];
     } catch (e) {
-      console.error('Repo*Account*register: ', e);
+      console.error('Api*Account*register: ', e);
       if (e.graphQLErrors && e.graphQLErrors[0]) {
         throw new Error(e.graphQLErrors[0].message);
       } else {
@@ -97,4 +97,4 @@ class AuthRepo {
   }
 }
 
-export default AuthRepo;
+export default AuthApi;

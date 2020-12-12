@@ -10,7 +10,7 @@ import { postgraphile } from '@services/postgraphile';
 import rbacRoutes from '@services/rbac';
 import ServerConfig from '@config/server';
 import type { JWTClaims } from '@models/Session';
-import AuthRepo from '@repos/auth';
+import AuthApi from '@api/auth';
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -42,7 +42,7 @@ express()
       try {
         const { email, password } = req.body;
 
-        const jwt = await AuthRepo.authenticate(email, password);
+        const jwt = await AuthApi.authenticate(email, password);
         if (jwt) {
           // set auth cookie
           const { name, options } = ServerConfig.cookies.jwt;
@@ -52,7 +52,7 @@ express()
           const claims = jsonwebtoken.decode(jwt) as JWTClaims;
 
           // get scope by this account role
-          const scopes = await AuthRepo.getScopes(claims.role);
+          const scopes = await AuthApi.getScopes(claims.role);
 
           res.status(200).json({
             claims: jsonwebtoken.decode(jwt),
@@ -99,7 +99,7 @@ express()
       if (token) {
         const claims = jsonwebtoken.decode(token) as JWTClaims;
         
-        const scopes = await AuthRepo.getScopes(claims.role);
+        const scopes = await AuthApi.getScopes(claims.role);
         // set scopes for @beyonk/sapper-rbac;
         res.user = {
           scope: scopes,

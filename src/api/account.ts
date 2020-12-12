@@ -2,7 +2,7 @@ import client from '@services/graphql/apollo';
 import { CurrentAccount, RegisterAccount } from '@services/graphql/generated/documents/account';
 import type { CommonAccountPayloadFragment, CurrentAccountQuery, CurrentAccountQueryVariables, RegisterAccountMutation, RegisterAccountMutationVariables } from '@services/graphql/generated/types';
 
-class AccountRepo {
+class AccountApi {
   static async register(variables: RegisterAccountMutationVariables):Promise<CommonAccountPayloadFragment|undefined> {
     try {
       const { data } = await client.mutate<RegisterAccountMutation, RegisterAccountMutationVariables>({
@@ -12,7 +12,7 @@ class AccountRepo {
       const account = data && data.registerAccount && data.registerAccount.account;
       return account || undefined;
     } catch (e) {
-      console.error('Repo*Account*register: ', e);
+      console.error('Api*Account*register: ', e);
       if (e.graphQLErrors && e.graphQLErrors[0]) {
         throw new Error(e.graphQLErrors[0].message);
       } else {
@@ -29,7 +29,7 @@ class AccountRepo {
       const currentAccount = data && data.currentAccount;
       return currentAccount || undefined;
     } catch (e) {
-      console.error('Repo*Account*current: ', e);
+      console.error('Api*Account*current: ', e);
       if (e.graphQLErrors && e.graphQLErrors[0]) {
         throw new Error(e.graphQLErrors[0].message);
       } else {
@@ -39,4 +39,4 @@ class AccountRepo {
   }
 }
 
-export default AccountRepo;
+export default AccountApi;

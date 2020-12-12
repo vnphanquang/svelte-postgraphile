@@ -29,7 +29,7 @@ const aliases = alias({
     { find: '@models', replacement: path.resolve(__dirname, 'src/models')},
     { find: '@services', replacement: path.resolve(__dirname, 'src/services')},
     { find: '@stores', replacement: path.resolve(__dirname, 'src/stores')},
-    { find: '@repos', replacement: path.resolve(__dirname, 'src/repos')},
+    { find: '@api', replacement: path.resolve(__dirname, 'src/api')},
     { find: '@utils', replacement: path.resolve(__dirname, 'src/utils')},
     { find: '@config', replacement: path.resolve(__dirname, 'src/config')},
     { find: '@env', replacement: path.resolve(__dirname,`src/config/env/env.${mode}.toml` )},

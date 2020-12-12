@@ -21,7 +21,7 @@
             "@models*": ["src/models*"],
             "@services*": ["src/services*"],
             "@stores*": ["src/stores*"],
-            "@repos*": ["src/repos*"],
+            "@api*": ["src/api*"],
             "@utils*": ["src/utils*"],
             "@config*": ["src/config*"]
         },
