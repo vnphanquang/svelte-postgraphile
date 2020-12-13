@@ -99,7 +99,7 @@ create type public.jwt_token as (
     id      uuid,
     name    text,
     exp     integer,
-    iss     text default 'test'
+    iss     text
 );
 ----------public.register_account-------------
 create or replace function public.register_account(
@@ -150,7 +150,8 @@ create or replace function public.authenticate(
             "$role",
             "$id",
             "$name",
-            extract(epoch from now() + interval '7 days')
+            extract(epoch from now() + interval '7 days'),
+            'sveltepost'
         )::public.jwt_token;
     end
 $$ language plpgsql strict security definer;
