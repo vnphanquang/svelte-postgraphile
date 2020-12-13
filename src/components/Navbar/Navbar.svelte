@@ -42,7 +42,6 @@
     {#if authenticated}
       <p class="text-md md:text-lg italic text-left ml-4">
         <span>Hello</span>
-        <span class="navbar__name text-bold">{$session.claims.name}</span>
         <span>!</span>
       </p>
       {#if $page.path !== '/test'}

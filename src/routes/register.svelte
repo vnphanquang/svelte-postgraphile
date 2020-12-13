@@ -1,8 +1,7 @@
 <script context="module">
-
 	export async function preload(this: any, _: any, session: any) {
     try {
-      const { claims } = session;
+      const { claims } = session || {};
       if (claims) {
         return this.redirect(302, '/');
       }

@@ -1,6 +1,14 @@
 import client from '@services/graphql/apollo';
-import { CurrentAccount, RegisterAccount } from '@services/graphql/generated/documents/account';
-import type { CommonAccountPayloadFragment, CurrentAccountQuery, CurrentAccountQueryVariables, RegisterAccountMutation, RegisterAccountMutationVariables } from '@services/graphql/generated/types';
+import { CurrentAccount, RegisterAccount, GetAllAccounts } from '@services/graphql/generated/documents/account';
+import type {
+  CommonAccountPayloadFragment,
+  CurrentAccountQuery,
+  CurrentAccountQueryVariables,
+  RegisterAccountMutation,
+  RegisterAccountMutationVariables,
+  GetAllAccountsQuery,
+  GetAllAccountsQueryVariables,
+} from '@services/graphql/generated/types';
 
 class AccountApi {
   static async register(variables: RegisterAccountMutationVariables):Promise<CommonAccountPayloadFragment|undefined> {
@@ -30,6 +38,23 @@ class AccountApi {
       return currentAccount || undefined;
     } catch (e) {
       console.error('Api*Account*current: ', e);
+      if (e.graphQLErrors && e.graphQLErrors[0]) {
+        throw new Error(e.graphQLErrors[0].message);
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  static async getAllAccounts(): Promise<CommonAccountPayloadFragment[]> {
+    try {
+      const { data } = await client.query<GetAllAccountsQuery, GetAllAccountsQueryVariables>({
+        query: GetAllAccounts,
+      });
+      const accounts = data && data.accounts && data.accounts.nodes;
+      return accounts || [];
+    } catch (e) {
+      console.error('Api*Account*getAllAccounts: ', e);
       if (e.graphQLErrors && e.graphQLErrors[0]) {
         throw new Error(e.graphQLErrors[0].message);
       } else {

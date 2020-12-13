@@ -64,3 +64,11 @@ mutation DeleteAccountById($id: UUID!) {
     }
   }
 }
+
+query GetAllAccounts {
+  accounts {
+    nodes {
+      ...commonAccountPayload
+    }
+  }
+}

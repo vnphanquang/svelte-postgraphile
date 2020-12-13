@@ -987,7 +987,7 @@
     postcss "7.0.32"
     purgecss "^3.0.0"
 
-"@graphile-contrib/pg-simplify-inflector@^6.0.0":
+"@graphile-contrib/pg-simplify-inflector@^5.0.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@graphile-contrib/pg-simplify-inflector/-/pg-simplify-inflector-6.1.0.tgz#5ecb842bd43af4d3ffdfcd25b1e7c452374f7440"
   integrity sha512-3eI2FP4ulu/fxwkJBNXhR6XEzqVz4wJWFr4LfeyUNNArUtLFx0DpP6YdcARCYgwLExFcIQNE8fnul3JKiciYIw==
@@ -7159,6 +7159,11 @@ svelte-preprocess@^4.0.0:
     "@types/sass" "^1.16.0"
     detect-indent "^6.0.0"
     strip-indent "^3.0.0"
+
+svelte-table@^0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/svelte-table/-/svelte-table-0.1.16.tgz#2a85aa16975d4ff42376d46d498895bb3a60db6e"
+  integrity sha512-hHWUjqmRBAxj4Y52av5yrT0uUVwZ4JuIxRsIOO06qNqwM5iIuRZPgJccc+hQtfimdQJ2Is2EVsMtOJpQAfN3qg==
 
 svelte@^3.15.0, svelte@^3.29.0:
   version "3.30.0"

@@ -1,9 +1,24 @@
+<script context="module">
+	export async function preload(this: any, _: any, session: any) {
+    try {
+      const { claims } = session || {};
+      if (claims) {
+        return this.redirect(302, '/');
+      }
+    } catch (e) {
+      console.error(e)
+      this.error(500, e);
+    }
+  };
+</script>
+
 <script lang="typescript">
   import { goto, stores } from '@sapper/app';
   import AuthApi from '@api/auth';
   import { debounce, validateEmail } from '@utils/index';
   import Icon from 'svelte-awesome';
   import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+  import { Role } from '@services/graphql/generated/types';
 
   let email: string = '';
   let password: string = '';
@@ -17,8 +32,14 @@
   const submit = debounce(async () => {
     try {
       const auth = await AuthApi.login(email, password);
-      auth && session.set(auth);
-      await goto('/');
+      if (auth) {
+        session.set(auth);
+        if (auth.claims.role === Role.Admin) {
+          await goto('/admin');
+        } else {
+          await goto('/');
+        }
+      }
     } catch (e) {
       error = e.message;
       console.error(e);

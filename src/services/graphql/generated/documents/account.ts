@@ -57,3 +57,12 @@ export const DeleteAccountById = gql`
   }
 }
     ${CommonAccountPayload}`;
+export const GetAllAccounts = gql`
+    query GetAllAccounts {
+  accounts {
+    nodes {
+      ...commonAccountPayload
+    }
+  }
+}
+    ${CommonAccountPayload}`;

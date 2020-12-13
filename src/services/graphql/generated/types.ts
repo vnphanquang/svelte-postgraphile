@@ -982,6 +982,20 @@ export type DeleteAccountByIdMutation = (
   )> }
 );
 
+export type GetAllAccountsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllAccountsQuery = (
+  { __typename?: 'Query' }
+  & { accounts?: Maybe<(
+    { __typename?: 'AccountsConnection' }
+    & { nodes: Array<(
+      { __typename?: 'Account' }
+      & CommonAccountPayloadFragment
+    )> }
+  )> }
+);
+
 export type AuthenticateMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
