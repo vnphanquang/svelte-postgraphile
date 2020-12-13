@@ -1,8 +1,8 @@
 revoke usage on schema public from anonymous;
 
-drop role if exists admin;
-drop role if exists "user";
-drop role if exists anonymous;
+drop role if exists "ADMIN";
+drop role if exists "USER";
+drop role if exists "ANONYMOUS";
 
 drop extension if exists "uuid-ossp";
 drop extension if exists "pgcrypto";

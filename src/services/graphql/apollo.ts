@@ -2,11 +2,11 @@ import { ApolloClient, DefaultOptions } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import fetch from 'isomorphic-fetch';
-import ServerConfig from '@config/server';
+import ClientConfig from '@config/client';
 
 const defaultLinkOptions = {
   // You should use an absolute URL here
-  uri: `${ServerConfig.api.url}${ServerConfig.api.routes.graphql}`,
+  uri: `${ClientConfig.api.url}${ClientConfig.api.routes.graphql}`,
   fetch,
   credentials: 'same-origin',
 };

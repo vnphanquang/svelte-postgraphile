@@ -7,15 +7,15 @@ create extension if not exists "uuid-ossp";
 create extension if not exists "pgcrypto";
 
 ------------------------
-create role anonymous;
+create role "ANONYMOUS";
 
-create role "user";
-grant anonymous to "user";
+create role "USER";
+grant "ANONYMOUS" to "USER";
 
-create role admin;
-grant "user" to admin;
+create role "ADMIN";
+grant "USER" to "ADMIN";
 
 ------------------------
-grant usage on schema public to anonymous;
+grant usage on schema public to "ANONYMOUS";
 
 alter default privileges revoke execute on functions from public;

@@ -18,7 +18,7 @@ const postgraphileConfig: PostgraphileConfig = {
     showErrorStack: !!dev && 'json',
     extendedErrors: ['hint', 'detail', 'errcode'],
     exportGqlSchemaPath: path.resolve('src/services/graphql/generated/schema.graphql'),
-    pgDefaultRole: 'anonymous',
+    pgDefaultRole: 'ANONYMOUS',
     jwtPgTypeIdentifier: 'public.jwt_token',
     jwtSecret: Env.jwt_secret,
   },

@@ -4,3 +4,4 @@ declare module '@sapper/service-worker';
 declare module '*.toml';
 declare module 'cookie-parser';
 declare module '@beyonk/sapper-rbac';
+declare module 'svelte-awesome';

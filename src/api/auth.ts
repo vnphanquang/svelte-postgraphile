@@ -15,7 +15,7 @@ import apolloClient from '@services/graphql/apollo';
 class AuthApi {
   static BASE_URL: string = `${ClientConfig.api.url}${ClientConfig.api.routes.auth}`
 
-  static async login(email: string, password: string): Promise<any> {
+  static async login(email: string, password: string): Promise<Session> {
     try {
       const response: Response = await fetch(`${AuthApi.BASE_URL}`, {
         ...RequestInit, 
@@ -78,6 +78,7 @@ class AuthApi {
 
   static async getScopes(role: Role): Promise<Scope[]> {
     try {
+      role = role.toUpperCase() as Role;
       const { data } = await apolloClient.query<GetScopesByRoleQuery, GetScopesByRoleQueryVariables>({
         query: GetScopesByRole,
         variables: {

@@ -4,10 +4,10 @@
 
 @layer base {
   :root {
-    --color-background: 49,57,64;
-    --color-text: 254,255,255;
-    --color-primary: 251,191,16;
-    --color-primary-hover: 254,206,65;
+    --color-background: 255,255,255;
+    --color-text: 0,0,0;
+    --color-primary: 0,0,255;
+    --color-primary-hover: 30,144,255;
   }
 
   @font-face {
@@ -86,6 +86,9 @@
     }
     &::placeholder {
       @apply text-sm italic;
+    }
+    &.invalid {
+      border-color: red;
     }
   }
 }

@@ -1,14 +1,14 @@
 drop type if exists public.scope;
 create type public.scope as enum (
-    'visitor',      -- can visit site
-    'manager'       -- can manage site
+    'VISITOR',      -- can visit site
+    'MANAGER'       -- can manage site
     );
 
 -----------public.role-------------
 drop type if exists public.role;
 create type public.role as enum (
-    'user',
-    'admin'
+    'USER',
+    'ADMIN'
     );
 
 -----------public.role_scopes-------------
@@ -23,25 +23,17 @@ comment on column public.role_scopes.role is 'Role of a registered account';
 comment on column public.role_scopes.scopes is 'Array of scopes bound to account';
 
 insert into public.role_scopes (role, scopes)
-values ('user'::public.role, array ['visitor']::public.scope[]),
-      ('admin'::public.role, array ['visitor', 'manager']::public.scope[]);
+values ('USER'::public.role, array ['VISITOR']::public.scope[]),
+      ('ADMIN'::public.role, array ['VISITOR', 'MANAGER']::public.scope[]);
 
-grant select on public.role_scopes to "user";
-grant update on public.role_scopes to admin;
-
-alter table public.role_scopes enable row level security;
-
-create policy select_role_scopes on public.role_scopes for select
-    using (
-        role = current_setting('jwt.claims.role', true)::public.role
-        or current_setting('jwt.claims.role')::public.role = 'admin'
-    );
+grant select on public.role_scopes to "ANONYMOUS";
+grant update on public.role_scopes to "ADMIN";
 
 -----------public.account-------------
 drop table if exists public.account;
 create table public.account (
     id              uuid        primary key     default uuid_generate_v1mc(),
-    role            public.role                 default 'user',
+    role            public.role                 default 'USER'::public.role,
     first_name      text        not null        check (char_length(first_name) < 100),
     last_name       text                        check (char_length(last_name) < 100),
     password_hash   varchar     not null,
@@ -69,27 +61,27 @@ create trigger account_updated_at
     for each row
 execute procedure common.set_updated_at();
 
-grant select on public.account to anonymous;
-grant select, update, delete on public.account to "user";
+grant select on public.account to "ANONYMOUS";
+grant select, update, delete on public.account to "USER";
 
 alter table public.account enable row level security;
 
 create policy select_account on public.account for select
     using (
         id = current_setting('jwt.claims.id', true)::uuid
-        or current_setting('jwt.claims.role')::public.role = 'admin'
+        or current_setting('jwt.claims.role')::public.role = 'ADMIN'
     );
 
 create policy update_account on public.account for update
     using (
         id = current_setting('jwt.claims.id', true)::uuid
-        or current_setting('jwt.claims.role')::public.role = 'admin'
+        or current_setting('jwt.claims.role')::public.role = 'ADMIN'
     );
 
 create policy delete_account on public.account for delete
     using (
         id = current_setting('jwt.claims.id', true)::uuid
-        or current_setting('jwt.claims.role')::public.role = 'admin'
+        or current_setting('jwt.claims.role')::public.role = 'ADMIN'
     );
 
 -----------public.jwt_token-------------
@@ -127,7 +119,7 @@ create or replace function public.register_account(
 $$ language plpgsql strict security definer;
 
 comment on function public.register_account("$first_name" text, "$email" text, "$last_name" text, "$password" text) is 'Register a single account';
-grant execute on function public.register_account("$first_name" text, "$email" text, "$last_name" text, "$password" text) to anonymous;
+grant execute on function public.register_account("$first_name" text, "$email" text, "$last_name" text, "$password" text) to "ANONYMOUS";
 
 --------------public.authenticate----------
 create or replace function public.authenticate(
@@ -157,7 +149,7 @@ create or replace function public.authenticate(
 $$ language plpgsql strict security definer;
 
 comment on function public.authenticate("$email" text, "$password" text) is 'Create a JWT for account identification and authorization with email & password';
-grant execute on function public.authenticate("$email" text, "$password" text) to anonymous;
+grant execute on function public.authenticate("$email" text, "$password" text) to "ANONYMOUS";
 
 ------------public.current_account------------
 create or replace function public.current_account() returns public.account as $$
@@ -175,7 +167,7 @@ create or replace function public.current_account() returns public.account as $$
 $$ language plpgsql stable security definer;
 
 comment on function public.current_account() is 'Get current logged-in account identified by JWT';
-grant execute on function public.current_account() to "user";
+grant execute on function public.current_account() to "USER";
 
 -----------public.change_password-------------
 create or replace function public.change_password(current_password text, new_password text)
@@ -205,4 +197,4 @@ returns boolean as $$
 $$ language plpgsql strict security definer;
 
 comment on function public.change_password(current_password text, new_password text) is 'Change password of an existing account';
-grant execute on function public.change_password(current_password text, new_password text) to "user";
+grant execute on function public.change_password(current_password text, new_password text) to "USER";
